@@ -1,8 +1,8 @@
 import { RequestHandler } from 'express';
-import registerUser from '../../services/auth/register.service';
+import createUser from '../../services/user/create.service';
 
 const registerController: RequestHandler = async (req, res, _next) => {
-  const user = await registerUser(req.body);
+  const user = await createUser(req.body);
 
   res.status(201).json({
     status: 201,

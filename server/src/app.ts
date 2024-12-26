@@ -8,6 +8,7 @@ import errorHandler from './middlewares/errorHandler.controller';
 import sessionHandlerController from './middlewares/sessionHandler.controller';
 
 const app = express();
+
 app.set('trust proxy', 1);
 
 app.use(cors());

@@ -5,12 +5,10 @@ import User from '../../db/models/user.model';
 import { LoginCredentials } from '../../@types/credentials.type';
 import { ErrorMessage } from '../../@dict/errors.enum';
 
-export default async function loginUser(payload: LoginCredentials) {
-  const { identifier, password } = payload;
+export default async function findUser(payload: LoginCredentials) {
+  const { email, password } = payload;
 
-  const user = await User.findOne({
-    $or: [{ username: identifier }, { email: identifier }],
-  });
+  const user = await User.findOne({ email });
   if (!user) throw createHttpError(404, ErrorMessage.notFound);
 
   const isPasswordValid = await bcryptjs.compare(password, user.password);

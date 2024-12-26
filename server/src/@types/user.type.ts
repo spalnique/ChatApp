@@ -1,4 +1,6 @@
-export type User = {
+import { HydratedDocument } from 'mongoose';
+
+export type User = HydratedDocument<{
   displayName: string;
   age: number;
   username: string;
@@ -7,4 +9,4 @@ export type User = {
   userChats: string[];
   createdAt: Date;
   updatedAt: Date;
-};
+}>;

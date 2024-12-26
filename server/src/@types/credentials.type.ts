@@ -5,4 +5,4 @@ export type RegisterCredentials = Pick<
   'username' | 'age' | 'email' | 'password'
 >;
 
-export type LoginCredentials = { identifier: string; password: string };
+export type LoginCredentials = { email: string; password: string };

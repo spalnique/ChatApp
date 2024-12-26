@@ -2,18 +2,19 @@ import session from 'express-session';
 import store from '../redis';
 import env from '../utils/env';
 import { ENV } from '../constants/index';
-
-const secret = env(ENV.REDIS_SECRET);
+import { SessionCookie } from '../@dict/cookie.enum';
 
 export default session({
   store,
-  secret,
+  secret: env(ENV.REDIS_SECRET),
   resave: false,
   saveUninitialized: false,
-  name: 'ssid',
+  rolling: true,
+  unset: 'destroy',
+  name: SessionCookie.name,
   cookie: {
-    secure: true,
     httpOnly: true,
     maxAge: 60 * 1000,
+    secure: env(ENV.PROD_ENV) === 'true' ? true : false,
   },
 });

@@ -13,4 +13,8 @@ client.on('close', () => console.log('Disconnected from Redis!'));
 client.on('reconnecting', () => console.log('Reconnecting to Redis...'));
 client.on('error', (err) => console.error('Redis error:', err));
 
-export default new RedisStore({ client, prefix: '', disableTouch: true });
+export default new RedisStore({
+  client,
+  prefix: '',
+  disableTouch: true,
+});

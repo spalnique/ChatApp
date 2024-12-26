@@ -7,6 +7,7 @@ export const ENV = {
   JWT_SECRET: 'JWT_SECRET',
   REDIS_URL: 'REDIS_URL',
   REDIS_SECRET: 'REDIS_SECRET',
+  PROD_ENV: 'PROD_ENV',
 };
 
 export const ONE_MINUTE = 60 * 1000;

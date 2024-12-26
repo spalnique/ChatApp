@@ -5,8 +5,12 @@ import User from '../../db/models/user.model';
 import { RegisterCredentials } from '../../@types/credentials.type';
 import { ErrorMessage } from '../../@dict/errors.enum';
 
-export default async function registerUser(payload: RegisterCredentials) {
+export default async function createUser(payload: RegisterCredentials) {
   const { username, age, email, password } = payload;
+
+  if (!username || !email || !password) {
+    throw createHttpError(400, ErrorMessage.missingCredentials);
+  }
 
   const existingUser = await User.findOne({ $or: [{ username }, { email }] });
 

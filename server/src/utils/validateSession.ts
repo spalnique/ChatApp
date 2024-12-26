@@ -1,6 +1,8 @@
 import type { Request } from 'express';
 
-const validateSession = (req: Request) => {
+import isTokenValid from './verifyToken';
+
+const validateSession = async (req: Request) => {
   const result = {
     authHeader: '',
     isBearer: false,
@@ -14,12 +16,11 @@ const validateSession = (req: Request) => {
   result.isBearer = result.authHeader.split(' ')[0] === 'Bearer';
   if (!result.isBearer) return result;
 
-  result.isMatch =
-    result.authHeader.split(' ')[1] === req.session.auth.accessToken;
+  result.isMatch = result.authHeader.split(' ')[1] === req.session.accessToken;
   if (!result.isMatch) return result;
 
-  result.isExpired =
-    new Date() > new Date(req.session.auth.accessTokenValidUntil);
+  result.isExpired = isTokenValid(req.session.accessToken);
+
   return result;
 };
 
