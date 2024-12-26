@@ -16,7 +16,6 @@ const loginController: RequestHandler = async (req, res, _next) => {
   // }
 
   const user = await findUser(req.body);
-
   const token = createToken(user.id);
 
   Object.assign(req.session, {
