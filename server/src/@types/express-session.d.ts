@@ -1,8 +1,8 @@
-import { User } from './user.type';
+import { Types } from 'mongoose';
 
 declare module 'express-session' {
   interface SessionData {
-    email: string;
+    userID: Types.ObjectId;
     token: string;
   }
 }

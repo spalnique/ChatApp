@@ -1,7 +1,7 @@
 import app from './app.ts';
-import env from './utils/env.ts';
+import env from './helper/env.ts';
 import connectToDB from './db/connectToDB.ts';
-import { ENV } from './constants/index';
+import { ENV } from './constant/index';
 
 (async () => {
   const PORT = env(ENV.PORT, 3000);

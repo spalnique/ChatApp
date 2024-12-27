@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
-import env from '../utils/env';
-import { ENV } from '../constants/index';
+import env from '../helper/env';
+import { ENV } from '../constant/index';
 
 const connectToDB = async () => {
   const DB_USER = env(ENV.DB_USER);

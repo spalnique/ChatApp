@@ -1,5 +1,5 @@
 import { RequestHandler } from 'express';
-import { getChatById } from '../../services/getChatById.service';
+import { getChatById } from '../../service/chat/getChatById.service';
 
 export const getChatByIdController: RequestHandler = async (req, res) => {
   const { id } = req.params;

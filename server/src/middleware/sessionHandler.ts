@@ -1,7 +1,7 @@
 import session from 'express-session';
 import store from '../redis';
-import env from '../utils/env';
-import { ENV } from '../constants/index';
+import env from '../helper/env';
+import { ENV, WEEK } from '../constant/index';
 import { SessionCookie } from '../@dict/cookie.enum';
 
 export default session({
@@ -14,7 +14,7 @@ export default session({
   name: SessionCookie.name,
   cookie: {
     httpOnly: true,
-    maxAge: 60 * 1000,
+    maxAge: WEEK,
     secure: env(ENV.PROD_ENV) === 'true' ? true : false,
   },
 });

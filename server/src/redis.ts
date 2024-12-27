@@ -1,8 +1,9 @@
 import Redis from 'ioredis';
 import { RedisStore } from 'connect-redis';
 
-import env from './utils/env';
-import { ENV } from './constants/index';
+import env from './helper/env';
+
+import { ENV } from './constant/index';
 
 const redis_url = env(ENV.REDIS_URL);
 const client = new Redis(redis_url, { tls: { rejectUnauthorized: false } });

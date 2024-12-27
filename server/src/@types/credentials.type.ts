@@ -1,8 +1,9 @@
-import { User } from './user.type';
-
-export type RegisterCredentials = Pick<
-  User,
-  'username' | 'age' | 'email' | 'password'
->;
+export type RegisterCredentials = {
+  displayName?: string;
+  age: number;
+  username: string;
+  email: string;
+  password: string;
+};
 
 export type LoginCredentials = { email: string; password: string };
