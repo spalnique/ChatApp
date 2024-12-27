@@ -1,12 +1,23 @@
-import { model, Schema } from 'mongoose';
-import User from './user.model';
-import Message from './message.model';
+import { type InferSchemaType, model, Schema } from 'mongoose';
+import { Collections } from '../../@dict/collection.enum';
 
 const chatSchema = new Schema(
   {
-    participants: { type: [User.schema] },
-    messages: { type: [Message.schema] },
-    lastMessage: { type: Message.schema },
+    participants: {
+      type: [Schema.Types.ObjectId],
+      ref: Collections.user,
+      default: [],
+    },
+    messages: {
+      type: [Schema.Types.ObjectId],
+      ref: Collections.message,
+      default: [],
+    },
+    latest: {
+      type: Schema.Types.ObjectId,
+      ref: Collections.message,
+      default: null,
+    },
   },
   {
     timestamps: true,
@@ -14,4 +25,6 @@ const chatSchema = new Schema(
   }
 );
 
-export const Chat = model('Chat', chatSchema);
+export type Chat = InferSchemaType<typeof chatSchema>;
+
+export const Chat = model(Collections.chat, chatSchema);

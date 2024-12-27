@@ -1,9 +1,9 @@
 import express from 'express';
 
-import errorGuard from '../helper/errorGuard';
-import authController from '../controller/auth/auth.controller';
+import authController from '../controller/auth.controller';
 import authenticate from '../middleware/authenticate';
-import { validateBody } from '../middleware/validateBody';
+import validateBody from '../middleware/validateBody';
+import errorGuard from '../helper/errorGuard';
 import {
   loginUserSchema,
   registerUserSchema,

@@ -2,7 +2,7 @@ import createHttpError from 'http-errors';
 import { RequestHandler } from 'express';
 import { ObjectSchema } from 'joi';
 
-export const validateBody =
+const validateBody =
   (schema: ObjectSchema): RequestHandler =>
   async (req, res, next) => {
     try {
@@ -15,3 +15,5 @@ export const validateBody =
       next(error);
     }
   };
+
+export default validateBody;

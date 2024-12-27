@@ -1,5 +1,6 @@
-import { model, Schema } from 'mongoose';
-import { User } from '../../@types/user.type';
+import { type InferSchemaType, model, Schema } from 'mongoose';
+
+import { Collections } from '../../@dict/collection.enum';
 
 const userSchema = new Schema(
   {
@@ -8,7 +9,11 @@ const userSchema = new Schema(
     username: { type: String, required: true },
     email: { type: String, required: true },
     password: { type: String, required: true },
-    userChats: { type: [Schema.Types.ObjectId], ref: 'Chat', default: [] },
+    userChats: {
+      type: [Schema.Types.ObjectId],
+      ref: Collections.chat,
+      default: [],
+    },
   },
   { versionKey: false, timestamps: true }
 );
@@ -19,4 +24,6 @@ userSchema.methods.toJSON = function () {
   return obj;
 };
 
-export default model<User>('User', userSchema);
+export type User = InferSchemaType<typeof userSchema>;
+
+export default model<User>(Collections.user, userSchema);

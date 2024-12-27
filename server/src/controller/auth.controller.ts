@@ -1,10 +1,13 @@
-import { RequestHandler } from 'express';
+import createHttpError from 'http-errors';
+import { type RequestHandler } from 'express';
 
-import userService from '../../service/auth/user.service';
-import createToken from '../../helper/createToken';
+import userService from '../service/auth/user.service';
+import createToken from '../helper/createToken';
 
-import { SessionCookie } from '../../@dict/cookie.enum';
-import { ONE_MINUTE } from '../../constant/index';
+import { SessionCookie } from '../@dict/cookie.enum';
+import { ErrorMessage } from '../@dict/errors.enum';
+
+import { ONE_MINUTE } from '../constant/index';
 
 const register: RequestHandler = async (req, res, _next) => {
   const user = await userService.create(req.body);
@@ -36,7 +39,7 @@ const logout: RequestHandler = async (req, res, next) => {
   }
 
   req.session.destroy((err) => {
-    if (err) next(err);
+    if (err) next(createHttpError(500, ErrorMessage.loggingOutUser));
 
     res.clearCookie(SessionCookie.name);
 
