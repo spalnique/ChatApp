@@ -4,8 +4,9 @@ import cors from 'cors';
 import authRouter from './router/auth.router';
 import chatRouter from './router/chat.router';
 
-import errorHandler from './middleware/errorHandler.controller';
-import sessionHandler from './middleware/sessionHandler';
+import errorHandler from './middleware/errorHandler';
+import session from './middleware/session';
+import notFoundHandler from './middleware/notFoundHandler';
 
 const app = express();
 
@@ -13,10 +14,12 @@ app.set('trust proxy', 1);
 
 app.use(cors());
 app.use(express.json());
+app.use(session);
 
-app.use(sessionHandler);
 app.use('/api/auth', authRouter);
 app.use('/api/chat', chatRouter);
+app.use('*', notFoundHandler);
+
 app.use(errorHandler);
 
 export default app;

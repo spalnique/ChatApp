@@ -1,10 +1,10 @@
-import session from 'express-session';
+import expressSession from 'express-session';
 import store from '../redis';
 import env from '../helper/env';
 import { ENV, WEEK } from '../constant/index';
 import { SessionCookie } from '../@dict/cookie.enum';
 
-export default session({
+const session = expressSession({
   store,
   secret: env(ENV.REDIS_SECRET),
   resave: false,
@@ -18,3 +18,5 @@ export default session({
     secure: env(ENV.PROD_ENV) === 'true' ? true : false,
   },
 });
+
+export default session;
