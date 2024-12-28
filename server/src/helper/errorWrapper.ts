@@ -2,7 +2,7 @@ import { RequestHandler } from 'express';
 
 type ErrorGuard = (controller: RequestHandler) => RequestHandler;
 
-const errorGuard: ErrorGuard = (controller) => async (req, res, next) => {
+const errorWrapper: ErrorGuard = (controller) => async (req, res, next) => {
   try {
     await controller(req, res, next);
   } catch (err) {
@@ -10,4 +10,4 @@ const errorGuard: ErrorGuard = (controller) => async (req, res, next) => {
   }
 };
 
-export default errorGuard;
+export default errorWrapper;

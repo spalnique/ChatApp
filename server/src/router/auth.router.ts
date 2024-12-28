@@ -1,9 +1,9 @@
 import express from 'express';
 
 import authController from '../controller/auth.controller';
-import authenticate from '../middleware/authenticate';
+import authGuard from '../middleware/authGuard';
 import validateBody from '../middleware/validateBody';
-import errorGuard from '../helper/errorGuard';
+import errorWrapper from '../helper/errorWrapper';
 import {
   loginUserSchema,
   registerUserSchema,
@@ -14,14 +14,14 @@ const router = express.Router();
 router.post(
   '/register',
   validateBody(registerUserSchema),
-  errorGuard(authController.register)
+  errorWrapper(authController.register)
 );
 router.post(
   '/login',
   validateBody(loginUserSchema),
-  errorGuard(authController.login)
+  errorWrapper(authController.login)
 );
-router.post('/logout', errorGuard(authController.logout));
-router.post('/refresh', authenticate, errorGuard(authController.refresh));
+router.post('/logout', errorWrapper(authController.logout));
+router.post('/refresh', authGuard, errorWrapper(authController.refresh));
 
 export default router;

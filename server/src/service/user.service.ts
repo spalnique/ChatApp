@@ -1,15 +1,14 @@
 import bcryptjs from 'bcryptjs';
 import createHttpError from 'http-errors';
-import { type HydratedDocument } from 'mongoose';
+import { type UpdateQuery, type HydratedDocument, Types } from 'mongoose';
 
-import UserCollection, { type User } from '../../db/model/user.model';
+import UserCollection, { type User } from '../db/model/user.model';
 
 import {
   type LoginCredentials,
   type RegisterCredentials,
-} from '../../@types/credentials.type';
-
-import { ErrorMessage } from '../../@dict/errors.enum';
+} from '../@types/credentials.type';
+import { ErrorMessage } from '../@dict/errors.enum';
 
 const create = async (
   payload: RegisterCredentials
@@ -53,4 +52,8 @@ const find = async (
   return user;
 };
 
-export default { create, find };
+const update = async (ids: Types.ObjectId[], payload: UpdateQuery<User>) => {
+  await UserCollection.updateMany({ _id: { $in: ids } }, payload);
+};
+
+export default { create, find, update };

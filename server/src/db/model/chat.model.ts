@@ -3,21 +3,20 @@ import { Collections } from '../../@dict/collection.enum';
 
 const chatSchema = new Schema(
   {
-    participants: {
-      type: [Schema.Types.ObjectId],
-      ref: Collections.user,
-      default: [],
-    },
-    messages: {
-      type: [Schema.Types.ObjectId],
-      ref: Collections.message,
-      default: [],
-    },
-    latest: {
-      type: Schema.Types.ObjectId,
-      ref: Collections.message,
-      default: null,
-    },
+    participants: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: Collections.user,
+        required: true,
+      },
+    ],
+    messages: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: Collections.message,
+        default: [],
+      },
+    ],
   },
   {
     timestamps: true,

@@ -13,7 +13,8 @@ export default function isActiveUserToken(
     ignoreExpiration: true,
   });
 
-  return userID.toString() === payload.id;
-
-  // return { isCorresponding, isExpired };
+  return {
+    isOwner: userID.toString() === payload.id,
+    isExpired: new Date() > new Date(payload.exp * 1000),
+  };
 }

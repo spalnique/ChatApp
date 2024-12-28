@@ -7,8 +7,8 @@ const validateAuthHeader = (req: Request) => {
     authHeader: '',
     isBearer: false,
     isActiveSession: false,
-    isActiveUserToken: false,
-    // isExpired: true,
+    isOwner: false,
+    isExpired: true,
   };
 
   result.authHeader = req.get('Authorization') ?? '';
@@ -22,9 +22,9 @@ const validateAuthHeader = (req: Request) => {
   result.isActiveSession = token === req.session.token;
   if (!result.isActiveSession) return result;
 
-  result.isActiveUserToken = isActiveUserToken(req.session.userID, token);
+  const { isOwner, isExpired } = isActiveUserToken(req.session.userID, token);
 
-  return result;
+  return { ...result, isOwner, isExpired };
 };
 
 export default validateAuthHeader;

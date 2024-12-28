@@ -15,4 +15,4 @@ const messageSchema = new Schema(
 
 export type Message = InferSchemaType<typeof messageSchema>;
 
-export default model(Collections.message, messageSchema);
+export const Message = model(Collections.message, messageSchema);
