@@ -5,7 +5,9 @@ const create = async (payload: Pick<Chat, 'participants'>) =>
   await Chat.create(payload);
 
 const getById = async (chatId: string) =>
-  await Chat.findById(chatId).populate('participants').populate('messages');
+  await Chat.findById(chatId)
+    .populate('participants', 'id displayName')
+    .populate('messages');
 
 const updateById = async (chatId: string, payload: UpdateQuery<Chat>) =>
   await Chat.findByIdAndUpdate(chatId, payload, {
