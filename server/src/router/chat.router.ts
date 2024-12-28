@@ -8,6 +8,7 @@ const router = express.Router();
 router.use(authGuard);
 
 router.post('/', errorWrapper(chatController.create));
+router.get('/', errorWrapper(chatController.getAll));
 router.get('/:chatId', errorWrapper(chatController.getById));
 router.patch('/:chatId', errorWrapper(chatController.updateById));
 router.delete('/:chatId', errorWrapper(chatController.deleteById));

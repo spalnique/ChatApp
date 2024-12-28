@@ -22,7 +22,7 @@ const register: RequestHandler = async (req, res, _next) => {
 const login: RequestHandler = async (req, res, _next) => {
   const user = await userService.find(req.body);
 
-  req.session.userID = user._id;
+  req.session.user = user;
   req.session.token = createToken(user._id, DAY);
 
   res.status(200).json({
@@ -33,7 +33,7 @@ const login: RequestHandler = async (req, res, _next) => {
 };
 
 const logout: RequestHandler = async (req, res, next) => {
-  if (!req.session.userID) {
+  if (!req.session.user?._id) {
     res.status(200).json({ status: 200, message: 'Already logged out' });
     return;
   }
@@ -48,7 +48,7 @@ const logout: RequestHandler = async (req, res, next) => {
 };
 
 const refresh: RequestHandler = async (req, res, _next) => {
-  req.session.token = createToken(req.session.userID, DAY);
+  req.session.token = createToken(req.session.user.id, DAY);
   req.session.touch().save();
 
   res.status(200).json({

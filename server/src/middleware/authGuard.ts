@@ -3,7 +3,7 @@ import createHttpError from 'http-errors';
 import validateAuthHeader from '../helper/validateAuthHeader';
 
 const authGuard: RequestHandler = (req, _res, next) => {
-  if (!req.session || !req.session.userID) {
+  if (!req.session.user || !req.session.user._id) {
     return next(createHttpError(401, 'Unauthorized'));
   }
 

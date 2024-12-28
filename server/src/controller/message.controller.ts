@@ -6,7 +6,7 @@ const create: RequestHandler = async (req, res, _next) => {
   const { chatId, content } = req.body;
 
   const message = await messageService.create({
-    authorId: req.session.userID,
+    authorId: req.session.user._id,
     content,
   });
 

@@ -5,10 +5,10 @@ import userService from '../service/user.service';
 
 const create: RequestHandler = async (req, res, _next) => {
   const chat = await chatService.create({
-    participants: [req.session.userID, ...req.body.participants],
+    participants: [req.session.user._id, ...req.body.participants],
   });
 
-  userService.update([req.session.userID, ...req.body.participants], {
+  userService.update([req.session.user._id, ...req.body.participants], {
     $addToSet: { chats: chat.id },
   });
 
@@ -30,6 +30,16 @@ const getById: RequestHandler = async (req, res, _next) => {
     status: 200,
     message: 'Successfully found chat',
     data: chat,
+  });
+};
+
+const getAll: RequestHandler = async (req, res, _next) => {
+  const chats = await chatService.getAll(req.session.user.chats);
+
+  res.status(200).json({
+    status: 200,
+    message: 'Successfully retrieved all chats',
+    data: chats,
   });
 };
 
@@ -55,4 +65,4 @@ const deleteById: RequestHandler = async (req, res, _next) => {
   });
 };
 
-export default { create, getById, deleteById, updateById };
+export default { create, getById, getAll, deleteById, updateById };

@@ -1,8 +1,9 @@
-import { Types } from 'mongoose';
+import { HydratedDocument, Types } from 'mongoose';
+import { type User } from '../db/model/user.model';
 
 declare module 'express-session' {
   interface SessionData {
-    userID: Types.ObjectId;
+    user: HydratedDocument<User>;
     token: string;
   }
 }
