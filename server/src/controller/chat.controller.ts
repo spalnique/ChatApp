@@ -9,7 +9,7 @@ const create: RequestHandler = async (req, res, _next) => {
   });
 
   userService.update([req.session.user._id, ...req.body.participants], {
-    $addToSet: { chats: chat.id },
+    $addToSet: { chats: chat._id },
   });
 
   res.status(201).json({

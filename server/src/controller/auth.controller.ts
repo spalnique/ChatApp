@@ -33,14 +33,10 @@ const login: RequestHandler = async (req, res, _next) => {
 };
 
 const logout: RequestHandler = async (req, res, next) => {
-  if (!req.session.user?._id) {
-    res.status(200).json({ status: 200, message: 'Already logged out' });
-    return;
-  }
-
   req.session.destroy((err) => {
-    if (err) next(createHttpError(500, ErrorMessage.loggingOutUser));
-
+    if (err) {
+      next(createHttpError(500, ErrorMessage.loggingOutUser));
+    }
     res.clearCookie(SessionCookie.name);
 
     res.status(200).json({ status: 200, message: 'Successfully logged out' });
@@ -48,8 +44,7 @@ const logout: RequestHandler = async (req, res, next) => {
 };
 
 const refresh: RequestHandler = async (req, res, _next) => {
-  req.session.token = createToken(req.session.user.id, DAY);
-  req.session.touch().save();
+  req.session.token = createToken(req.session.user._id, DAY);
 
   res.status(200).json({
     status: 200,

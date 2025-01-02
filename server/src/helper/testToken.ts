@@ -1,8 +1,8 @@
 import jwt, { JwtPayload } from 'jsonwebtoken';
+import { Types } from 'mongoose';
 
 import env from './env';
 import { ENV } from '../constant/index';
-import { Types } from 'mongoose';
 
 export default function isActiveUserToken(
   userID: Types.ObjectId,

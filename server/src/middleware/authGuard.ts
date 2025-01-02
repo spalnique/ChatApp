@@ -1,9 +1,10 @@
 import { RequestHandler } from 'express';
 import createHttpError from 'http-errors';
+
 import validateAuthHeader from '../helper/validateAuthHeader';
 
 const authGuard: RequestHandler = (req, _res, next) => {
-  if (!req.session.user || !req.session.user._id) {
+  if (!req.session.user || !req.session.user?._id) {
     return next(createHttpError(401, 'Unauthorized'));
   }
 
@@ -29,7 +30,15 @@ const authGuard: RequestHandler = (req, _res, next) => {
     return next(createHttpError(401, 'Unauthorized: Token is not valid'));
   }
 
-  if (isExpired) {
+  console.log(`Route: ${req.baseUrl + req.path} \n`, {
+    authHeader,
+    isBearer,
+    isActiveSession,
+    isOwner,
+    isExpired,
+  });
+
+  if (isExpired && req.path !== '/refresh') {
     return next(createHttpError(401, 'Unauthorized: Token expired'));
   }
 
