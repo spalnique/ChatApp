@@ -49,13 +49,15 @@ const find = async (
     throw createHttpError(401, ErrorMessage.user404);
   }
 
-  return user.populate({
-    path: 'chats',
-    populate: [
-      { path: 'participants', select: 'displayName id' },
-      { path: 'messages' },
-    ],
-  });
+  return user;
+
+  // return user.populate({
+  //   path: 'chats',
+  //   populate: [
+  //     { path: 'participants', select: 'displayName id' },
+  //     { path: 'messages' },
+  //   ],
+  // });
 };
 
 const update = async (ids: Types.ObjectId[], payload: UpdateQuery<User>) => {

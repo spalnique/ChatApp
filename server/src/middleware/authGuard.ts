@@ -30,14 +30,6 @@ const authGuard: RequestHandler = (req, _res, next) => {
     return next(createHttpError(401, 'Unauthorized: Token is not valid'));
   }
 
-  console.log(`Route: ${req.baseUrl + req.path} \n`, {
-    authHeader,
-    isBearer,
-    isActiveSession,
-    isOwner,
-    isExpired,
-  });
-
   if (isExpired && req.path !== '/refresh') {
     return next(createHttpError(401, 'Unauthorized: Token expired'));
   }
