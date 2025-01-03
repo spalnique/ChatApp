@@ -1,5 +1,5 @@
 import express from 'express';
-import cors from 'cors';
+import cors, { CorsOptions } from 'cors';
 
 import authRouter from './router/auth.router';
 import chatRouter from './router/chat.router';
@@ -9,11 +9,16 @@ import errorHandler from './middleware/errorHandler';
 import session from './middleware/session';
 import notFoundHandler from './middleware/notFoundHandler';
 
+const corsConfig: CorsOptions = {
+  origin: 'http://localhost:5173',
+  credentials: true,
+};
+
 const app = express();
 
 app.set('trust proxy', 1);
 
-app.use(cors());
+app.use(cors(corsConfig));
 app.use(express.json());
 app.use(session);
 

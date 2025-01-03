@@ -15,7 +15,7 @@ const register: RequestHandler = async (req, res, _next) => {
   res.status(201).json({
     status: 201,
     message: 'Successfully registered new user',
-    data: user,
+    data: { user },
   });
 };
 
@@ -39,7 +39,11 @@ const logout: RequestHandler = async (req, res, next) => {
     }
     res.clearCookie(SessionCookie.name);
 
-    res.status(200).json({ status: 200, message: 'Successfully logged out' });
+    res.status(200).json({
+      status: 200,
+      message: 'Successfully logged out',
+      // data: { user: null, token: null },
+    });
   });
 };
 
