@@ -25,7 +25,7 @@ export const registerUserSchema = joi.object<RegisterSchema>({
       'string.pattern.base':
         'Password must contain at least one small and one capital letters.',
     }),
-  age: joi.number().min(18).required(),
+  isAdult: joi.boolean().valid(true).required(),
 });
 
 export const loginUserSchema = joi.object({

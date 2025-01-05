@@ -5,7 +5,7 @@ import { Collections } from '../../@dict/collection.enum';
 const userSchema = new Schema(
   {
     displayName: { type: String, default: null },
-    age: { type: Number, required: true },
+    isAdult: { type: Boolean, required: true },
     username: { type: String, required: true },
     email: { type: String, required: true },
     password: { type: String, required: true },

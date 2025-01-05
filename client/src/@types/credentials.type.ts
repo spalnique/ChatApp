@@ -5,7 +5,7 @@ export type LoginCredentials = {
 
 export type RegisterCredentials = {
   displayName?: string;
-  age: number;
+  isAdult: boolean;
   username: string;
   email: string;
   password: string;

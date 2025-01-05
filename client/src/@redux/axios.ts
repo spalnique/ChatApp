@@ -4,8 +4,6 @@ const baseURL = JSON.parse(import.meta.env.VITE_PROD_ENV)
   ? import.meta.env.VITE_API_PROD_URL
   : import.meta.env.VITE_API_DEV_URL;
 
-console.log(baseURL);
-
 const instance = axios.create({
   baseURL,
   withCredentials: true,
@@ -26,10 +24,9 @@ export const chatEndpoint = {
   deleteById: (id: string) => `chat/${id}`,
 };
 
-export function updateToken(value?: string | undefined): void {
-  instance.defaults.headers.common.Authorization = value
-    ? `Bearer ${value}`
-    : null;
+export function updateToken(value: string | null): void {
+  instance.defaults.headers.common.Authorization =
+    typeof value === 'string' ? `Bearer ${value}` : value;
 }
 
 export default instance;

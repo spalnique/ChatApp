@@ -1,8 +1,8 @@
-import { User } from './user.type';
+import { User } from '../db/model/user.model';
 
 export type RegisterSchema = Pick<
   User,
-  'displayName' | 'email' | 'username' | 'age' | 'password'
+  'displayName' | 'email' | 'username' | 'isAdult' | 'password'
 >;
 
 export type LoginSchema = Pick<User, 'email' | 'password'>;

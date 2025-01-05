@@ -85,4 +85,4 @@ const deleteById = createAsyncThunk<Chat, string>(
   }
 );
 
-export default { getAll, getById, create, updateById, deleteById };
+export const chatApi = { getAll, getById, create, updateById, deleteById };

@@ -1,16 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import authApi from '../api/authApi';
-import type { User } from '../../@types/user.type';
+import { authApi } from '../index';
+import type { User } from 'types';
 
 type InitialState = {
   user: User | null;
+  token: string | null;
   isLoading: boolean;
   isError: unknown;
 };
 
 const initialState: InitialState = {
   user: null,
+  token: null,
   isLoading: false,
   isError: null,
 };
@@ -49,7 +51,8 @@ const authSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(authApi.login.fulfilled, (state, { payload }) => {
-        state.user = payload;
+        state.user = payload.user;
+        state.token = payload.token;
         state.isLoading = false;
       });
 
@@ -64,6 +67,7 @@ const authSlice = createSlice({
       })
       .addCase(authApi.logout.fulfilled, (state) => {
         state.user = null;
+        state.token = null;
         state.isLoading = false;
       });
     builder
@@ -72,10 +76,13 @@ const authSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(authApi.refresh.rejected, (state, { payload }) => {
+        state.user = null;
+        state.token = null;
         state.isError = payload;
         state.isLoading = false;
       })
-      .addCase(authApi.refresh.fulfilled, (state) => {
+      .addCase(authApi.refresh.fulfilled, (state, { payload }) => {
+        state.token = payload.token;
         state.isLoading = false;
       });
   },
