@@ -1,4 +1,4 @@
-import { useEffect, type FC } from 'react';
+import { StrictMode, useEffect, type FC } from 'react';
 
 import { authApi, useAppDispatch } from '../@redux/index';
 import { AppRouter } from '../router';
@@ -11,10 +11,10 @@ const App: FC = () => {
 
   useEffect(() => {
     dispatch(authApi.refresh());
-  }, [dispatch]);
+  });
 
   return (
-    <>
+    <StrictMode>
       <Container>
         <AnimatePresence>
           <AnimatedWrapper animationKey={'router'}>
@@ -22,7 +22,7 @@ const App: FC = () => {
           </AnimatedWrapper>
         </AnimatePresence>
       </Container>
-    </>
+    </StrictMode>
   );
 };
 export default App;
