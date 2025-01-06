@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { AxiosError, type AxiosResponse } from 'axios';
+import { AxiosError, type AxiosRequestConfig, type AxiosResponse } from 'axios';
 
 import instance, { authEndpoint as auth, updateToken } from '../axios';
 
@@ -7,6 +7,42 @@ import type { LoginCredentials, RegisterCredentials, User } from 'types';
 import type { RootState } from '../store';
 
 type AuthData = { token: string; user: User };
+type OriginalRequest = AxiosRequestConfig & {
+  retry?: boolean;
+};
+
+instance.interceptors.response.use(
+  (response) => response,
+  async (err: AxiosError) => {
+    const request = err.config as OriginalRequest;
+
+    if (!err.response || err.response.status !== 401 || request.retry) {
+      return Promise.reject(err);
+    }
+
+    request.retry = true;
+
+    try {
+      const {
+        data: { data },
+      } = await instance.post<AxiosResponse<AuthData>>(auth.refresh);
+      const newToken = data.token;
+
+      if (newToken) {
+        updateToken(newToken);
+        request.headers = {
+          ...request.headers,
+          Authorization: `Bearer ${newToken}`,
+        };
+      }
+
+      return instance.request(request);
+    } catch (refreshError) {
+      console.error('Token refresh failed:', refreshError);
+      return Promise.reject('Relogin required');
+    }
+  }
+);
 
 const register = createAsyncThunk<AuthData, RegisterCredentials>(
   'auth/register',

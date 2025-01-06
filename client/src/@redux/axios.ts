@@ -9,6 +9,12 @@ const instance = axios.create({
   withCredentials: true,
 });
 
+export function updateToken(value: string | null): void {
+  instance.defaults.headers.common.Authorization = value
+    ? `Bearer ${value}`
+    : value;
+}
+
 export const authEndpoint = {
   register: 'auth/register',
   login: 'auth/login',
@@ -23,11 +29,5 @@ export const chatEndpoint = {
   updateById: (id: string) => `chat/${id}`,
   deleteById: (id: string) => `chat/${id}`,
 };
-
-export function updateToken(value: string | null): void {
-  instance.defaults.headers.common.Authorization = value
-    ? `Bearer ${value}`
-    : value;
-}
 
 export default instance;
