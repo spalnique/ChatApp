@@ -14,13 +14,13 @@ type OriginalRequest = AxiosRequestConfig & {
 instance.interceptors.response.use(
   (response) => response,
   async (err: AxiosError) => {
-    const request = err.config as OriginalRequest;
+    const originalRequest = err.config as OriginalRequest;
 
-    if (!err.response || err.response.status !== 401 || request.retry) {
+    if (!err.response || err.response.status !== 401 || originalRequest.retry) {
       return Promise.reject(err);
     }
 
-    request.retry = true;
+    originalRequest.retry = true;
 
     try {
       const {
@@ -30,13 +30,13 @@ instance.interceptors.response.use(
 
       if (newToken) {
         updateToken(newToken);
-        request.headers = {
-          ...request.headers,
+        originalRequest.headers = {
+          ...originalRequest.headers,
           Authorization: `Bearer ${newToken}`,
         };
       }
 
-      return instance.request(request);
+      return instance.request(originalRequest);
     } catch (refreshError) {
       console.error('Token refresh failed:', refreshError);
       return Promise.reject('Relogin required');
