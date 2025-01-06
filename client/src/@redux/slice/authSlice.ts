@@ -38,6 +38,7 @@ const authSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(authApi.register.fulfilled, (state, { payload }) => {
+        console.log(payload);
         state.user = payload.user;
         state.token = payload.token;
         state.isLoading = false;
@@ -84,6 +85,7 @@ const authSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(authApi.refresh.fulfilled, (state, { payload }) => {
+        state.user = payload.user;
         state.token = payload.token;
         state.isLoading = false;
       });

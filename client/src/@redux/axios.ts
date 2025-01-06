@@ -25,8 +25,9 @@ export const chatEndpoint = {
 };
 
 export function updateToken(value: string | null): void {
-  instance.defaults.headers.common.Authorization =
-    typeof value === 'string' ? `Bearer ${value}` : value;
+  instance.defaults.headers.common.Authorization = value
+    ? `Bearer ${value}`
+    : value;
 }
 
 export default instance;

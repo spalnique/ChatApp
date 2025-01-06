@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 
 import { LoginForm, RegisterForm } from 'components';
-import { Navigate, NavLink, useSearchParams } from 'react-router';
+import { Navigate, useSearchParams } from 'react-router';
 
 const AuthPage: FC = () => {
   const [searchParams] = useSearchParams();
@@ -32,20 +32,8 @@ const AuthPage: FC = () => {
         alignItems: 'center',
       }}
     >
-      {isLogin && (
-        <>
-          <LoginForm />
-          <span>Not registered yet?</span>
-          <NavLink to={'?register'}>Go to registration</NavLink>
-        </>
-      )}
-      {isRegister && (
-        <>
-          <RegisterForm />
-          <span>Already registered?</span>
-          <NavLink to={'?login'}>Go to login</NavLink>
-        </>
-      )}
+      {isLogin && <LoginForm />}
+      {isRegister && <RegisterForm />}
     </div>
   );
 };
