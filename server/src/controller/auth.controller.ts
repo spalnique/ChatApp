@@ -12,10 +12,13 @@ import { DAY } from '../constant/index';
 const register: RequestHandler = async (req, res, _next) => {
   const user = await userService.create(req.body);
 
+  req.session.user = user;
+  req.session.token = createToken(user._id, DAY);
+
   res.status(201).json({
     status: 201,
-    message: 'Successfully registered new user',
-    data: { user },
+    message: 'Successfully registered and logged in',
+    data: { user: req.session.user, token: req.session.token },
   });
 };
 
@@ -28,7 +31,7 @@ const login: RequestHandler = async (req, res, _next) => {
   res.status(200).json({
     status: 200,
     message: 'Successfully logged in',
-    data: { user, token: req.session.token },
+    data: { user: req.session.user, token: req.session.token },
   });
 };
 
@@ -42,7 +45,7 @@ const logout: RequestHandler = async (req, res, next) => {
     res.status(200).json({
       status: 200,
       message: 'Successfully logged out',
-      // data: { user: null, token: null },
+      data: { user: null, token: null },
     });
   });
 };
@@ -53,7 +56,7 @@ const refresh: RequestHandler = async (req, res, _next) => {
   res.status(200).json({
     status: 200,
     message: 'Successfully refreshed',
-    data: { token: req.session.token },
+    data: { user: req.session.user, token: req.session.token },
   });
 };
 
