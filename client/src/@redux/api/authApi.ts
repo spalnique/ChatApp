@@ -16,7 +16,12 @@ instance.interceptors.response.use(
   async (err: AxiosError) => {
     const originalRequest = err.config as OriginalRequest;
 
-    if (!err.response || err.response.status !== 401 || originalRequest.retry) {
+    if (
+      !err.response ||
+      originalRequest.url?.includes('login') ||
+      err.response.status !== 401 ||
+      originalRequest.retry
+    ) {
       return Promise.reject(err);
     }
 
