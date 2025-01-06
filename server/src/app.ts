@@ -10,7 +10,17 @@ import session from './middleware/session';
 import notFoundHandler from './middleware/notFoundHandler';
 
 const corsConfig: CorsOptions = {
-  origin: 'http://localhost:5173',
+  origin: (origin, callback) => {
+    const allowedOrigins = [
+      'http://localhost:5173',
+      'https://chat-client-jj38.onrender.com',
+    ];
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
 };
 
