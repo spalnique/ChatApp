@@ -8,11 +8,20 @@ import type { RootState } from '../store';
 
 type AuthData = { token: string; user: User };
 
-const register = createAsyncThunk<void, RegisterCredentials>(
+const register = createAsyncThunk<AuthData, RegisterCredentials>(
   'auth/register',
   async (credentials, thunkAPI) => {
     try {
-      await instance.post(auth.register, credentials);
+      const {
+        data: { data },
+      } = await instance.post<AxiosResponse<AuthData>>(
+        auth.register,
+        credentials
+      );
+
+      updateToken(data.token);
+
+      return data;
     } catch (err) {
       if (err instanceof AxiosError) {
         updateToken(null);

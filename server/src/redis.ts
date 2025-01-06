@@ -6,7 +6,6 @@ import env from './helper/env';
 import { ENV } from './constant/index';
 
 const redis_url = env(ENV.REDIS_URL);
-// const client = new Redis(redis_url, { tls: { rejectUnauthorized: false } });
 const client = new Redis(redis_url);
 
 client.on('connecting', () => console.log('Connecting to Redis...'));

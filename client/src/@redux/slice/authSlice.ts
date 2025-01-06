@@ -37,7 +37,9 @@ const authSlice = createSlice({
         state.isError = payload;
         state.isLoading = false;
       })
-      .addCase(authApi.register.fulfilled, (state) => {
+      .addCase(authApi.register.fulfilled, (state, { payload }) => {
+        state.user = payload.user;
+        state.token = payload.token;
         state.isLoading = false;
       });
 
