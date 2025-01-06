@@ -16,7 +16,6 @@ const session = expressSession({
     httpOnly: true,
     maxAge: WEEK,
     secure: env(ENV.PROD_ENV) === 'true' ? true : false,
-    sameSite: 'none',
   },
 });
 
