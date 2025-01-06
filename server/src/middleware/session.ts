@@ -15,6 +15,7 @@ const session = expressSession({
   cookie: {
     httpOnly: true,
     sameSite: 'none',
+    partitioned: true,
     maxAge: WEEK,
     secure: env(ENV.PROD_ENV) === 'true' ? true : false,
   },
