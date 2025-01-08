@@ -1,7 +1,7 @@
+import { Navigate, useSearchParams } from 'react-router';
 import type { FC } from 'react';
 
-import { LoginForm, RegisterForm } from 'components';
-import { Navigate, useSearchParams } from 'react-router';
+import { Container, LoginForm, RegisterForm } from '@components';
 
 const AuthPage: FC = () => {
   const [searchParams] = useSearchParams();
@@ -20,21 +20,10 @@ const AuthPage: FC = () => {
     );
 
   return (
-    <div
-      style={{
-        width: '50vw',
-        height: '100vh',
-        margin: '0 auto',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 24,
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
+    <Container>
       {isLogin && <LoginForm />}
       {isRegister && <RegisterForm />}
-    </div>
+    </Container>
   );
 };
 export default AuthPage;

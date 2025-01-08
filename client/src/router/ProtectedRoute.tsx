@@ -1,7 +1,7 @@
-import type { FC } from 'react';
 import { Navigate, Outlet } from 'react-router';
+import type { FC } from 'react';
 
-import { selectUser, useAppSelector } from '../@redux';
+import { selectUser, useAppSelector } from '@reduxtoolkit';
 
 const ProtectedRoute: FC = () => {
   const user = useAppSelector(selectUser);

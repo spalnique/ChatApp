@@ -1,14 +1,13 @@
+import { Navigate, useSearchParams } from 'react-router';
 import type { FC } from 'react';
 
+import { AnimatedWrapper } from '@components';
 import {
   authApi,
   selectUser,
   useAppDispatch,
   useAppSelector,
-} from '../../@redux';
-
-import { Navigate, useSearchParams } from 'react-router';
-import { AnimatedWrapper } from 'components';
+} from '@reduxtoolkit';
 
 const MainPage: FC = () => {
   const [searchParams] = useSearchParams();

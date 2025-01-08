@@ -7,12 +7,15 @@
     "module": "ESNext",
     "skipLibCheck": true,
     "paths": {
-      "types": ["./src/@types"],
-      "components": ["./src/components"],
-      "constant": ["./src/constant"],
-      "helpers": ["./src/helpers"],
-      "hooks": ["./src/hooks"],
-      "pages": ["./src/pages"]
+      "@types": ["./src/@types"],
+      "@components": ["./src/components"],
+      "@constant": ["./src/constant"],
+      "@helpers": ["./src/helpers"],
+      "@hooks": ["./src/hooks"],
+      "@pages": ["./src/pages"],
+      "@styled": ["./src/styled"],
+      "@reduxtoolkit": ["./src/@redux"],
+      "@router": ["./src/router"]
     },
 
     /* Bundler mode */

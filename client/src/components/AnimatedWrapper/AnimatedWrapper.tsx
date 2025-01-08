@@ -1,4 +1,4 @@
-import { AnimatePresence, MotionConfig, motion } from 'motion/react';
+import { AnimatePresence, motion, MotionConfig } from 'motion/react';
 import type { FC, PropsWithChildren } from 'react';
 
 type Props = PropsWithChildren & {

@@ -1,7 +1,7 @@
-import type { FC } from 'react';
 import { Navigate, Outlet } from 'react-router';
+import type { FC } from 'react';
 
-import { useAppSelector, selectUser } from '../@redux';
+import { selectUser, useAppSelector } from '@reduxtoolkit';
 
 const AuthRoute: FC = () => {
   const user = useAppSelector(selectUser);

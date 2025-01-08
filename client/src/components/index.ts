@@ -1,5 +1,10 @@
 export { default as Container } from './Container/Container';
 export { default as Redirect } from './Redirect/Redirect';
-export { default as LoginForm } from './LoginForm/LoginForm';
-export { default as RegisterForm } from './RegisterForm/RegisterForm';
+export { default as LoginForm } from './Forms/LoginForm';
+export { default as RegisterForm } from './Forms/RegisterForm';
 export { default as AnimatedWrapper } from './AnimatedWrapper/AnimatedWrapper';
+export { default as Form } from './FormElements/Form';
+export { default as FormInput } from './FormElements/FormInput';
+export { default as FormCheckbox } from './FormElements/FormCheckbox';
+export { default as Button } from './Button/Button.styled';
+export { default as Logo } from './Logo/Logo';

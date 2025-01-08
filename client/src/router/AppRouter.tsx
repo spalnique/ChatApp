@@ -1,9 +1,9 @@
-import { type FC } from 'react';
 import { Route, Routes } from 'react-router';
+import type { FC } from 'react';
 
-import { AuthRoute, ProtectedRoute } from './index';
-import { MainPage, AuthPage } from 'pages';
-import { Redirect } from 'components';
+import { Redirect } from '@components';
+import { AuthPage, MainPage } from '@pages';
+import { AuthRoute, ProtectedRoute } from '@router';
 
 const AppRouter: FC = () => {
   return (

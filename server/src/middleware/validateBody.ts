@@ -1,18 +1,23 @@
 import createHttpError from 'http-errors';
-import { RequestHandler } from 'express';
-import { ObjectSchema } from 'joi';
+import type { RequestHandler } from 'express';
+import { type ObjectSchema, ValidationError } from 'yup';
 
 const validateBody =
-  (schema: ObjectSchema): RequestHandler =>
-  async (req, res, next) => {
+  (schema: ObjectSchema<any>): RequestHandler =>
+  async (req, _res, next) => {
     try {
-      await schema.validateAsync(req.body, { abortEarly: false });
+      await schema.validate(req.body, { abortEarly: false });
       next();
     } catch (err) {
-      const error = createHttpError(400, 'Bad Request', {
-        errors: err.details,
-      });
-      next(error);
+      if (err instanceof ValidationError) {
+        const error = createHttpError(400, 'Bad Request', {
+          errors: err.inner || err,
+        });
+        next(error);
+        return;
+      }
+
+      next(err);
     }
   };
 

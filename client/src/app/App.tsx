@@ -1,10 +1,10 @@
-import { StrictMode, useEffect, type FC } from 'react';
-
-import { authApi, useAppDispatch } from '../@redux/index';
-import { AppRouter } from '../router';
-
-import { AnimatedWrapper, Container } from 'components';
 import { AnimatePresence } from 'motion/react';
+import { StrictMode, useEffect } from 'react';
+import type { FC } from 'react';
+
+import { AnimatedWrapper } from '@components';
+import { authApi, useAppDispatch } from '@reduxtoolkit';
+import { AppRouter } from '@router';
 
 const App: FC = () => {
   const dispatch = useAppDispatch();
@@ -15,13 +15,11 @@ const App: FC = () => {
 
   return (
     <StrictMode>
-      <Container>
-        <AnimatePresence>
-          <AnimatedWrapper animationKey={'router'}>
-            <AppRouter />
-          </AnimatedWrapper>
-        </AnimatePresence>
-      </Container>
+      <AnimatePresence>
+        <AnimatedWrapper animationKey={'router'}>
+          <AppRouter />
+        </AnimatedWrapper>
+      </AnimatePresence>
     </StrictMode>
   );
 };
