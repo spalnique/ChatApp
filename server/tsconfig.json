@@ -10,7 +10,10 @@
     "allowImportingTsExtensions": true,
     "noImplicitAny": true,
     "noUnusedLocals": true,
-    "typeRoots": ["./src/@types", "./node_modules/@types"]
+    "typeRoots": ["./src/@types", "./node_modules/@types"],
+    "paths": {
+      "@types": ["./src/@types"]
+    }
   },
   "include": ["src/**/*"]
 }

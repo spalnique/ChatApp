@@ -1,14 +1,13 @@
 import bcryptjs from 'bcryptjs';
 import createHttpError from 'http-errors';
-import { type UpdateQuery, type HydratedDocument, Types } from 'mongoose';
+import { Types } from 'mongoose';
+import type { User } from '../db/model/user.model';
+import type { HydratedDocument, UpdateQuery } from 'mongoose';
 
-import UserCollection, { type User } from '../db/model/user.model';
+import type { LoginCredentials, RegisterCredentials } from '@types';
 
-import {
-  type LoginCredentials,
-  type RegisterCredentials,
-} from '../@types/credentials.type';
 import { ErrorMessage } from '../@dict/errors.enum';
+import UserCollection from '../db/model/user.model';
 
 const create = async (
   payload: RegisterCredentials
