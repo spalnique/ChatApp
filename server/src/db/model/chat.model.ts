@@ -1,5 +1,7 @@
-import { type InferSchemaType, model, Schema } from 'mongoose';
-import { Collections } from '../../@dict/collection.enum';
+import { model, Schema } from 'mongoose';
+import type { InferSchemaType } from 'mongoose';
+
+import { Collections } from '@dict';
 
 const chatSchema = new Schema(
   {
@@ -26,4 +28,4 @@ const chatSchema = new Schema(
 
 export type Chat = InferSchemaType<typeof chatSchema>;
 
-export const Chat = model(Collections.chat, chatSchema);
+export default model<Chat>(Collections.chat, chatSchema);

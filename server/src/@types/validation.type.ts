@@ -1,4 +1,4 @@
-import { User } from '../db/model/user.model';
+import type { User } from '../db/model/user.model';
 
 export type RegisterSchema = Pick<
   User,

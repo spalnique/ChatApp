@@ -1,11 +1,10 @@
-import Redis from 'ioredis';
 import { RedisStore } from 'connect-redis';
+import Redis from 'ioredis';
 
-import env from './helper/env';
+import { ENV_VARS } from '@constants';
+import { env } from '@helpers';
 
-import { ENV } from './constant/index';
-
-const redis_url = env(ENV.REDIS_URL);
+const redis_url = env(ENV_VARS.REDIS_URL);
 const client = new Redis(redis_url);
 
 client.on('connecting', () => console.log('Connecting to Redis...'));

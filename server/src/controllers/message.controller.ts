@@ -1,6 +1,6 @@
 import { type RequestHandler } from 'express';
-import messageService from '../service/message.service';
-import chatService from '../service/chat.service';
+
+import { chatService, messageService } from '@services';
 
 const create: RequestHandler = async (req, res, _next) => {
   const { chatId, content } = req.body;

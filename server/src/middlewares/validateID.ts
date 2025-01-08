@@ -2,7 +2,7 @@ import { RequestHandler } from 'express';
 import createHttpError from 'http-errors';
 import { isValidObjectId } from 'mongoose';
 
-export const validateMongoId =
+const validateMongoId =
   (someId = 'id'): RequestHandler =>
   (req, res, next) => {
     const id = req.params[someId];
@@ -19,3 +19,5 @@ export const validateMongoId =
     }
     return next();
   };
+
+export default validateMongoId;

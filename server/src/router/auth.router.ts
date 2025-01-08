@@ -1,27 +1,23 @@
 import express from 'express';
 
-import authController from '../controller/auth.controller';
-import authGuard from '../middleware/authGuard';
-import validateBody from '../middleware/validateBody';
-import errorWrapper from '../helper/errorWrapper';
-import {
-  loginUserSchema,
-  registerUserSchema,
-} from '../validation/schema/auth.schema';
+import { authController } from '@controllers';
+import { errorWrapper } from '@helpers';
+import { authGuard, validateBody } from '@middlewares';
+import { loginUserSchema, registerUserSchema } from '@validation';
 
-const router = express.Router();
+const authRouter = express.Router();
 
-router.post(
+authRouter.post(
   '/register',
   validateBody(registerUserSchema),
   errorWrapper(authController.register)
 );
-router.post(
+authRouter.post(
   '/login',
   validateBody(loginUserSchema),
   errorWrapper(authController.login)
 );
-router.post('/logout', errorWrapper(authController.logout));
-router.post('/refresh', authGuard, errorWrapper(authController.refresh));
+authRouter.post('/logout', errorWrapper(authController.logout));
+authRouter.post('/refresh', authGuard, errorWrapper(authController.refresh));
 
-export default router;
+export default authRouter;

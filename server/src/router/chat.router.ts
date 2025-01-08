@@ -1,16 +1,17 @@
 import express from 'express';
-import chatController from '../controller/chat.controller';
-import errorWrapper from '../helper/errorWrapper';
-import authGuard from '../middleware/authGuard';
 
-const router = express.Router();
+import { chatController } from '@controllers';
+import { errorWrapper } from '@helpers';
+import { authGuard } from '@middlewares';
 
-router.use(authGuard);
+const chatRouter = express.Router();
 
-router.post('/', errorWrapper(chatController.create));
-router.get('/', errorWrapper(chatController.getAll));
-router.get('/:chatId', errorWrapper(chatController.getById));
-router.patch('/:chatId', errorWrapper(chatController.updateById));
-router.delete('/:chatId', errorWrapper(chatController.deleteById));
+chatRouter.use(authGuard);
 
-export default router;
+chatRouter.post('/', errorWrapper(chatController.create));
+chatRouter.get('/', errorWrapper(chatController.getAll));
+chatRouter.get('/:chatId', errorWrapper(chatController.getById));
+chatRouter.patch('/:chatId', errorWrapper(chatController.updateById));
+chatRouter.delete('/:chatId', errorWrapper(chatController.deleteById));
+
+export default chatRouter;

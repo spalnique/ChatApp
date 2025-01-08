@@ -1,14 +1,12 @@
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { Types } from 'mongoose';
 
-import env from './env';
-import { ENV } from '../constant/index';
+import { ENV_VARS } from '@constants';
 
-export default function isActiveUserToken(
-  userID: Types.ObjectId,
-  token: string
-) {
-  const { payload }: JwtPayload = jwt.verify(token, env(ENV.JWT_SECRET), {
+import env from './env.ts';
+
+export default function (userID: Types.ObjectId, token: string) {
+  const { payload }: JwtPayload = jwt.verify(token, env(ENV_VARS.JWT_SECRET), {
     complete: true,
     ignoreExpiration: true,
   });

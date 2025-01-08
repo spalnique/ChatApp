@@ -1,5 +1,7 @@
-import { type InferSchemaType, model, Schema } from 'mongoose';
-import { Collections } from '../../@dict/collection.enum';
+import { model, Schema } from 'mongoose';
+import type { InferSchemaType } from 'mongoose';
+
+import { Collections } from '@dict';
 
 const messageSchema = new Schema(
   {
@@ -15,4 +17,4 @@ const messageSchema = new Schema(
 
 export type Message = InferSchemaType<typeof messageSchema>;
 
-export const Message = model(Collections.message, messageSchema);
+export default model<Message>(Collections.message, messageSchema);

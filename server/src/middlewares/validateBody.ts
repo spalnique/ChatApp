@@ -1,6 +1,7 @@
 import createHttpError from 'http-errors';
+import { ValidationError } from 'yup';
 import type { RequestHandler } from 'express';
-import { type ObjectSchema, ValidationError } from 'yup';
+import type { ObjectSchema } from 'yup';
 
 const validateBody =
   (schema: ObjectSchema<any>): RequestHandler =>

@@ -1,7 +1,6 @@
 import { RequestHandler } from 'express';
 
-const errorWrapper =
-  (controller: RequestHandler): RequestHandler =>
+export default (controller: RequestHandler): RequestHandler =>
   async (req, res, next) => {
     try {
       await controller(req, res, next);
@@ -9,5 +8,3 @@ const errorWrapper =
       next(err);
     }
   };
-
-export default errorWrapper;

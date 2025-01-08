@@ -1,6 +1,7 @@
-import { type InferSchemaType, model, Schema } from 'mongoose';
+import { model, Schema } from 'mongoose';
+import type { InferSchemaType } from 'mongoose';
 
-import { Collections } from '../../@dict/collection.enum';
+import { Collections } from '@dict';
 
 const userSchema = new Schema(
   {

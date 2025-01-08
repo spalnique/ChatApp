@@ -1,7 +1,7 @@
 import { type RequestHandler } from 'express';
-import chatService from '../service/chat.service';
 import createHttpError from 'http-errors';
-import userService from '../service/user.service';
+
+import { chatService, userService } from '@services';
 
 const create: RequestHandler = async (req, res, _next) => {
   const chat = await chatService.create({

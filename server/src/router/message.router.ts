@@ -1,14 +1,15 @@
 import express from 'express';
-import errorWrapper from '../helper/errorWrapper';
-import authGuard from '../middleware/authGuard';
-import messageController from '../controller/message.controller';
 
-const router = express.Router();
+import { messageController } from '@controllers';
+import { errorWrapper } from '@helpers';
+import { authGuard } from '@middlewares';
 
-router.use(authGuard);
+const messageRouter = express.Router();
 
-router.post('/', errorWrapper(messageController.create));
-router.patch('/:messageId', errorWrapper(messageController.editById));
-router.delete('/:messageId', errorWrapper(messageController.deleteById));
+messageRouter.use(authGuard);
 
-export default router;
+messageRouter.post('/', errorWrapper(messageController.create));
+messageRouter.patch('/:messageId', errorWrapper(messageController.editById));
+messageRouter.delete('/:messageId', errorWrapper(messageController.deleteById));
+
+export default messageRouter;

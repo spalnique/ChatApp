@@ -1,13 +1,8 @@
-import express from 'express';
 import cors, { CorsOptions } from 'cors';
+import express from 'express';
 
-import authRouter from './router/auth.router';
-import chatRouter from './router/chat.router';
-import messageRouter from './router/message.router';
-
-import errorHandler from './middleware/errorHandler';
-import session from './middleware/session';
-import notFoundHandler from './middleware/notFoundHandler';
+import { errorHandler, notFoundHandler, session } from '@middlewares';
+import { authRouter, chatRouter, messageRouter } from '@router';
 
 const corsConfig: CorsOptions = {
   origin: (origin, callback) => {

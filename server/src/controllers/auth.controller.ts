@@ -1,13 +1,10 @@
-import createHttpError from 'http-errors';
 import { type RequestHandler } from 'express';
+import createHttpError from 'http-errors';
 
-import userService from '../service/user.service';
-import createToken from '../helper/createToken';
-
-import { SessionCookie } from '../@dict/cookie.enum';
-import { ErrorMessage } from '../@dict/errors.enum';
-
-import { DAY } from '../constant/index';
+import { DAY } from '@constants';
+import { ErrorMessage, SessionCookie } from '@dict';
+import { createToken } from '@helpers';
+import { userService } from '@services';
 
 const register: RequestHandler = async (req, res, _next) => {
   const user = await userService.create(req.body);

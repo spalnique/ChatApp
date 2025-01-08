@@ -1,7 +1,7 @@
 import { RequestHandler } from 'express';
 import createHttpError from 'http-errors';
 
-import validateAuthHeader from '../helper/validateAuthHeader';
+import { validateAuthHeader } from '@helpers';
 
 const authGuard: RequestHandler = (req, _res, next) => {
   if (!req.session.user || !req.session.user?._id) {

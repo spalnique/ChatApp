@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "outDir": "./dist",
-    "rootDir": "./src",
+    "outDir": "dist",
+    "rootDir": "src",
     "module": "NodeNext",
     "moduleResolution": "nodenext",
     "target": "ESNext",
@@ -10,9 +10,20 @@
     "allowImportingTsExtensions": true,
     "noImplicitAny": true,
     "noUnusedLocals": true,
-    "typeRoots": ["./src/@types", "./node_modules/@types"],
+    "sourceMap": true,
+    "typeRoots": ["src/@types", "node_modules/@types"],
+    "baseUrl": "./src",
     "paths": {
-      "@types": ["./src/@types"]
+      "@types": ["@types"],
+      "@dict": ["@dict"],
+      "@constants": ["constants"],
+      "@controllers": ["controllers"],
+      "@db": ["db"],
+      "@helpers": ["helpers"],
+      "@middlewares": ["middlewares"],
+      "@router": ["router"],
+      "@services": ["services"],
+      "@validation": ["validation"]
     }
   },
   "include": ["src/**/*"]

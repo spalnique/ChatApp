@@ -1,8 +1,8 @@
 import type { Request } from 'express';
 
-import isActiveUserToken from './testToken';
+import isActiveUserToken from './testToken.ts';
 
-const validateAuthHeader = (req: Request) => {
+export default (req: Request) => {
   const result = {
     authHeader: '',
     isBearer: false,
@@ -26,5 +26,3 @@ const validateAuthHeader = (req: Request) => {
 
   return { ...result, isOwner, isExpired };
 };
-
-export default validateAuthHeader;

@@ -1,18 +1,17 @@
 import bcryptjs from 'bcryptjs';
 import createHttpError from 'http-errors';
 import { Types } from 'mongoose';
-import type { User } from '../db/model/user.model';
 import type { HydratedDocument, UpdateQuery } from 'mongoose';
 
-import type { LoginCredentials, RegisterCredentials } from '@types';
+import type { LoginCredentials, RegisterCredentials, User } from '@types';
 
-import { ErrorMessage } from '../@dict/errors.enum';
-import UserCollection from '../db/model/user.model';
+import { UserModel } from '@db';
+import { ErrorMessage } from '@dict';
 
 const create = async (
   payload: RegisterCredentials
 ): Promise<HydratedDocument<User>> => {
-  const duplicate = await UserCollection.findOne({
+  const duplicate = await UserModel.findOne({
     $or: [{ username: payload.username }, { email: payload.email }],
   });
 
@@ -27,7 +26,7 @@ const create = async (
 
   const hashedPassword = await bcryptjs.hash(payload.password, 10);
 
-  return UserCollection.create({
+  return UserModel.create({
     ...payload,
     password: hashedPassword,
   });
@@ -38,7 +37,7 @@ const find = async (
 ): Promise<HydratedDocument<User>> => {
   const { email, password } = payload;
 
-  const user = await UserCollection.findOne({ email });
+  const user = await UserModel.findOne({ email });
   if (!user) {
     throw createHttpError(404, ErrorMessage.user404);
   }
@@ -60,7 +59,7 @@ const find = async (
 };
 
 const update = async (ids: Types.ObjectId[], payload: UpdateQuery<User>) => {
-  await UserCollection.updateMany({ _id: { $in: ids } }, payload);
+  await UserModel.updateMany({ _id: { $in: ids } }, payload);
 };
 
 export default { create, find, update };
