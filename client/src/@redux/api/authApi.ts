@@ -1,17 +1,24 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { AxiosError, type AxiosRequestConfig, type AxiosResponse } from 'axios';
+import { AxiosError } from 'axios';
+import type { AxiosRequestConfig, AxiosResponse } from 'axios';
 
-import instance, { authEndpoint as auth, updateToken } from '../axios';
+import type {
+  LoginCredentials,
+  RegisterCredentials,
+  RootState,
+  User,
+} from '@types';
 
-import type { LoginCredentials, RegisterCredentials, User } from 'types';
-import type { RootState } from '../store';
+import { authEndpoint, updateToken } from '@reduxtoolkit';
+
+import axiosInstance from '../axios.ts';
 
 type AuthData = { token: string; user: User };
 type OriginalRequest = AxiosRequestConfig & {
   retry?: boolean;
 };
 
-instance.interceptors.response.use(
+axiosInstance.interceptors.response.use(
   (response) => response,
   async (err: AxiosError) => {
     const originalRequest = err.config as OriginalRequest;
@@ -30,7 +37,9 @@ instance.interceptors.response.use(
     try {
       const {
         data: { data },
-      } = await instance.post<AxiosResponse<AuthData>>(auth.refresh);
+      } = await axiosInstance.post<AxiosResponse<AuthData>>(
+        authEndpoint.refresh
+      );
       const newToken = data.token;
 
       if (newToken) {
@@ -41,7 +50,7 @@ instance.interceptors.response.use(
         };
       }
 
-      return instance.request(originalRequest);
+      return axiosInstance.request(originalRequest);
     } catch (refreshError) {
       console.error('Token refresh failed:', refreshError);
       return Promise.reject('Relogin required');
@@ -55,8 +64,8 @@ const register = createAsyncThunk<AuthData, RegisterCredentials>(
     try {
       const {
         data: { data },
-      } = await instance.post<AxiosResponse<AuthData>>(
-        auth.register,
+      } = await axiosInstance.post<AxiosResponse<AuthData>>(
+        authEndpoint.register,
         credentials
       );
 
@@ -80,7 +89,10 @@ const login = createAsyncThunk<AuthData, LoginCredentials>(
     try {
       const {
         data: { data },
-      } = await instance.post<AxiosResponse<AuthData>>(auth.login, credentials);
+      } = await axiosInstance.post<AxiosResponse<AuthData>>(
+        authEndpoint.login,
+        credentials
+      );
 
       updateToken(data.token);
 
@@ -97,7 +109,7 @@ const login = createAsyncThunk<AuthData, LoginCredentials>(
 
 const logout = createAsyncThunk('auth/logout', async (_, thunkAPI) => {
   try {
-    await instance.post(auth.logout);
+    await axiosInstance.post(authEndpoint.logout);
   } catch (err) {
     if (err instanceof AxiosError) {
       return thunkAPI.rejectWithValue(err.message);
@@ -119,7 +131,9 @@ const refresh = createAsyncThunk<AuthData>(
     try {
       const {
         data: { data },
-      } = await instance.post<AxiosResponse<AuthData>>(auth.refresh);
+      } = await axiosInstance.post<AxiosResponse<AuthData>>(
+        authEndpoint.refresh
+      );
 
       updateToken(data.token);
 

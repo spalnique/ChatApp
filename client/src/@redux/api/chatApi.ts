@@ -1,15 +1,17 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import type { AxiosResponse } from 'axios';
 
-import instance, { chatEndpoint as chat } from '../axios';
+import type { Chat } from '@types';
 
-import type { Chat } from '../../@types/chat.type';
+import { chatEndpoint } from '@reduxtoolkit';
+
+import axiosInstance from '../axios.ts';
 
 const getAll = createAsyncThunk<Chat[]>('chat/getAll', async (_, thunkAPI) => {
   try {
     const {
       data: { data },
-    } = await instance.get<AxiosResponse<Chat[]>>(chat.getAll);
+    } = await axiosInstance.get<AxiosResponse<Chat[]>>(chatEndpoint.getAll);
     return data;
   } catch (err) {
     console.error(err);
@@ -24,7 +26,9 @@ const getById = createAsyncThunk<Chat, string>(
     try {
       const {
         data: { data },
-      } = await instance.get<AxiosResponse<Chat>>(chat.getById(id));
+      } = await axiosInstance.get<AxiosResponse<Chat>>(
+        chatEndpoint.getById(id)
+      );
       return data;
     } catch (err) {
       console.error(err);
@@ -40,7 +44,10 @@ const create = createAsyncThunk<Chat, Pick<Chat, 'participants'>>(
     try {
       const {
         data: { data },
-      } = await instance.post<AxiosResponse<Chat>>(chat.create, payload);
+      } = await axiosInstance.post<AxiosResponse<Chat>>(
+        chatEndpoint.create,
+        payload
+      );
       return data;
     } catch (err) {
       console.error(err);
@@ -56,8 +63,8 @@ const updateById = createAsyncThunk<Chat, Pick<Chat, '_id'> & Partial<Chat>>(
     try {
       const {
         data: { data },
-      } = await instance.patch<AxiosResponse<Chat>>(
-        chat.updateById(_id),
+      } = await axiosInstance.patch<AxiosResponse<Chat>>(
+        chatEndpoint.updateById(_id),
         payload
       );
       return data;
@@ -75,7 +82,9 @@ const deleteById = createAsyncThunk<Chat, string>(
     try {
       const {
         data: { data },
-      } = await instance.delete<AxiosResponse<Chat>>(chat.deleteById(id));
+      } = await axiosInstance.delete<AxiosResponse<Chat>>(
+        chatEndpoint.deleteById(id)
+      );
       return data;
     } catch (err) {
       console.error(err);

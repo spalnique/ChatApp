@@ -1,19 +1,19 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import {
-  persistStore,
-  persistReducer,
   FLUSH,
-  REHYDRATE,
   PAUSE,
   PERSIST,
+  persistReducer,
+  persistStore,
   PURGE,
   REGISTER,
+  REHYDRATE,
 } from 'redux-persist';
-
-import { authReducer } from './slice/authSlice';
 import storage from 'redux-persist/lib/storage';
 
-export const authPersistConfig = {
+import { authReducer } from './slice/authSlice.ts';
+
+const authPersistConfig = {
   key: 'auth',
   storage,
   whitelist: ['token', 'user'],
