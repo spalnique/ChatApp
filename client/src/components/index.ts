@@ -6,5 +6,6 @@ export { default as AnimatedWrapper } from './AnimatedWrapper/AnimatedWrapper';
 export { default as Form } from './FormElements/Form';
 export { default as FormInput } from './FormElements/FormInput';
 export { default as FormCheckbox } from './FormElements/FormCheckbox';
-export { default as Button } from './Button/Button.styled';
-export { default as Logo } from './Logo/Logo';
+export { default as Button } from './Button/Button.styled.tsx';
+export { default as Logo } from './Logo/Logo.tsx';
+export { default as ChatList } from './ChatList/ChatList.tsx';

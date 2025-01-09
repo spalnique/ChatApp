@@ -12,6 +12,7 @@ import {
 import storage from 'redux-persist/lib/storage';
 
 import { authReducer } from './slice/authSlice.ts';
+import { chatReducer } from './slice/chatSlice.ts';
 
 const authPersistConfig = {
   key: 'auth',
@@ -19,8 +20,15 @@ const authPersistConfig = {
   whitelist: ['token', 'user'],
 };
 
+// const chatPersistConfig = {
+//   key: 'chat',
+//   storage,
+//   whitelist: ['active'],
+// };
+
 const rootReducer = combineReducers({
   auth: persistReducer(authPersistConfig, authReducer),
+  chat: chatReducer,
 });
 
 export const store = configureStore({

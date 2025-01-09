@@ -1,7 +1,7 @@
 import { type RequestHandler } from 'express';
 import createHttpError from 'http-errors';
 
-import { DAY } from '@constants';
+import { DAY, ONE_MINUTE } from '@constants';
 import { ErrorMessage, SessionCookie } from '@dict';
 import { createToken } from '@helpers';
 import { userService } from '@services';
@@ -23,7 +23,7 @@ const login: RequestHandler = async (req, res, _next) => {
   const user = await userService.find(req.body);
 
   req.session.user = user;
-  req.session.token = createToken(user._id, DAY);
+  req.session.token = createToken(user._id, ONE_MINUTE / 6);
 
   res.status(200).json({
     status: 200,
@@ -48,7 +48,7 @@ const logout: RequestHandler = async (req, res, next) => {
 };
 
 const refresh: RequestHandler = async (req, res, _next) => {
-  req.session.token = createToken(req.session.user._id, DAY);
+  req.session.token = createToken(req.session.user._id, ONE_MINUTE / 6);
 
   res.status(200).json({
     status: 200,

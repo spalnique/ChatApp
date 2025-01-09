@@ -7,3 +7,5 @@ export type User = {
   createdAt: string;
   updatedAt: string;
 };
+
+export type Username = Pick<User, 'username'>;

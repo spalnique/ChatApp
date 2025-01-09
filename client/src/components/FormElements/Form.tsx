@@ -21,9 +21,10 @@ const Form: FC<Props> = ({
   logoProps,
   clickable,
   onSubmit,
+  ...props
 }) => {
   return (
-    <FormStyled onSubmit={onSubmit}>
+    <FormStyled onSubmit={onSubmit} {...props}>
       {logo && (
         <Logo
           style={{ width: 80, height: 80 }}

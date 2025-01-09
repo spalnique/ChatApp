@@ -7,3 +7,5 @@ export type RegisterCredentials = {
 };
 
 export type LoginCredentials = { email: string; password: string };
+
+export type Username = Pick<RegisterCredentials, 'username'>;

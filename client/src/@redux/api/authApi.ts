@@ -1,60 +1,74 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
-import type { AxiosRequestConfig, AxiosResponse } from 'axios';
+import type { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 
 import type {
+  AuthData,
   LoginCredentials,
   RegisterCredentials,
   RootState,
-  User,
 } from '@types';
 
-import { authEndpoint, updateToken } from '@reduxtoolkit';
+import { authEndpoint, store } from '@reduxtoolkit';
 
 import axiosInstance from '../axios.ts';
 
-type AuthData = { token: string; user: User };
-type OriginalRequest = AxiosRequestConfig & {
-  retry?: boolean;
-};
+let subscribers: Array<InternalAxiosRequestConfig> = [];
+
+function subscribeTokenRefresh(request: InternalAxiosRequestConfig) {
+  const isDuplicateRequest = subscribers.some(({ url }) => url === request.url);
+
+  if (!isDuplicateRequest) subscribers.push(request);
+}
+
+function onRefreshed() {
+  const requests = [...subscribers];
+  subscribers = [];
+  requests.forEach((request) => {
+    axiosInstance(request).catch((err) => {
+      console.error('Failed to retry request:', request, err);
+    });
+  });
+}
+
+axiosInstance.interceptors.request.use(async (config) => {
+  const token = store.getState().auth.token;
+
+  if (token) config.headers.Authorization = `Bearer ${token}`;
+
+  return config;
+});
 
 axiosInstance.interceptors.response.use(
   (response) => response,
-  async (err: AxiosError) => {
-    const originalRequest = err.config as OriginalRequest;
+  async (error: AxiosError) => {
+    const request = error.config;
+    const isRefreshRequest = request?.url?.endsWith(authEndpoint.refresh);
 
-    if (
-      !err.response ||
-      originalRequest.url?.includes('login') ||
-      err.response.status !== 401 ||
-      originalRequest.retry
-    ) {
-      return Promise.reject(err);
+    if (!request || error.status !== 401 || isRefreshRequest) {
+      return Promise.reject(error);
     }
 
-    originalRequest.retry = true;
+    const isAuthorized = request.headers.Authorization;
+    const isRefreshing = store.getState().auth.isRefreshing;
 
-    try {
-      const {
-        data: { data },
-      } = await axiosInstance.post<AxiosResponse<AuthData>>(
-        authEndpoint.refresh
-      );
-      const newToken = data.token;
+    if (!isRefreshing && isAuthorized) {
+      try {
+        await store.dispatch(refresh()).unwrap();
+        onRefreshed();
 
-      if (newToken) {
-        updateToken(newToken);
-        originalRequest.headers = {
-          ...originalRequest.headers,
-          Authorization: `Bearer ${newToken}`,
-        };
+        return axiosInstance(request);
+      } catch (refreshError) {
+        subscribers = [];
+        await store.dispatch(logout()).unwrap();
+
+        return Promise.reject(refreshError);
       }
-
-      return axiosInstance.request(originalRequest);
-    } catch (refreshError) {
-      console.error('Token refresh failed:', refreshError);
-      return Promise.reject('Relogin required');
     }
+
+    subscribeTokenRefresh(request);
+
+    return Promise.reject(error);
   }
 );
 
@@ -69,15 +83,12 @@ const register = createAsyncThunk<AuthData, RegisterCredentials>(
         credentials
       );
 
-      updateToken(data.token);
-
       return data;
     } catch (err) {
       if (err instanceof AxiosError) {
-        updateToken(null);
-
         return thunkAPI.rejectWithValue(err.message);
       }
+
       return thunkAPI.rejectWithValue('Something went wrong on register');
     }
   }
@@ -94,14 +105,12 @@ const login = createAsyncThunk<AuthData, LoginCredentials>(
         credentials
       );
 
-      updateToken(data.token);
-
       return data;
     } catch (err) {
       if (err instanceof AxiosError) {
-        updateToken(null);
         return thunkAPI.rejectWithValue(err.message);
       }
+
       return thunkAPI.rejectWithValue('Something went wrong on login');
     }
   }
@@ -114,9 +123,8 @@ const logout = createAsyncThunk('auth/logout', async (_, thunkAPI) => {
     if (err instanceof AxiosError) {
       return thunkAPI.rejectWithValue(err.message);
     }
+
     return thunkAPI.rejectWithValue('Something went wrong on logout');
-  } finally {
-    updateToken(null);
   }
 });
 
@@ -126,8 +134,6 @@ const refresh = createAsyncThunk<AuthData>(
     const authToken = (thunkAPI.getState() as RootState).auth.token;
     if (!authToken)
       throw new AxiosError('Cannot refresh session. Try logging in first.');
-    updateToken(authToken);
-
     try {
       const {
         data: { data },
@@ -135,14 +141,12 @@ const refresh = createAsyncThunk<AuthData>(
         authEndpoint.refresh
       );
 
-      updateToken(data.token);
-
       return data;
     } catch (err) {
       if (err instanceof AxiosError) {
-        updateToken(null);
         return thunkAPI.rejectWithValue(err.message);
       }
+
       return thunkAPI.rejectWithValue('Something went wrong on refresh');
     }
   }

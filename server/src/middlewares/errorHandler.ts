@@ -2,6 +2,8 @@ import { ErrorRequestHandler } from 'express';
 import { isHttpError } from 'http-errors';
 
 const errorHandler: ErrorRequestHandler = (err, req, res, _next) => {
+  console.error('Error caught by errorHandler:', err);
+
   if (isHttpError(err)) {
     if (err.message === 'Unauthorized') {
       req.session.destroy((error) => {

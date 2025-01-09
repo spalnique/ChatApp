@@ -2,7 +2,7 @@ import cors, { CorsOptions } from 'cors';
 import express from 'express';
 
 import { errorHandler, notFoundHandler, session } from '@middlewares';
-import { authRouter, chatRouter, messageRouter } from '@router';
+import { authRouter, chatRouter, messageRouter, userRouter } from '@router';
 
 const corsConfig: CorsOptions = {
   origin: (origin, callback) => {
@@ -28,6 +28,7 @@ app.use(express.json());
 app.use(session);
 
 app.use('/api/auth', authRouter);
+app.use('/api/user', userRouter);
 app.use('/api/chat', chatRouter);
 app.use('/api/message', messageRouter);
 app.use('*', notFoundHandler);

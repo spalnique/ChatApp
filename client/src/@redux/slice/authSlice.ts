@@ -1,20 +1,23 @@
 import { createSlice } from '@reduxjs/toolkit';
+import type { AxiosError } from 'axios';
 
 import type { User } from '@types';
 
-import { authApi } from '../index';
+import { authApi } from '@reduxtoolkit';
 
 type InitialState = {
   user: User | null;
   token: string | null;
   isLoading: boolean;
-  isError: unknown;
+  isRefreshing: boolean;
+  isError: AxiosError['message'] | string | null;
 };
 
 const initialState: InitialState = {
   user: null,
   token: null,
   isLoading: false,
+  isRefreshing: false,
   isError: null,
 };
 
@@ -26,6 +29,7 @@ const authSlice = createSlice({
 
   selectors: {
     selectUser: (state) => state.user,
+    selectIsRefreshing: (state) => state.isRefreshing,
   },
 
   extraReducers: (builder) => {
@@ -35,11 +39,10 @@ const authSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(authApi.register.rejected, (state, { payload }) => {
-        state.isError = payload;
+        state.isError = payload as string;
         state.isLoading = false;
       })
       .addCase(authApi.register.fulfilled, (state, { payload }) => {
-        console.log(payload);
         state.user = payload.user;
         state.token = payload.token;
         state.isLoading = false;
@@ -51,7 +54,7 @@ const authSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(authApi.login.rejected, (state, { payload }) => {
-        state.isError = payload;
+        state.isError = payload as string;
         state.isLoading = false;
       })
       .addCase(authApi.login.fulfilled, (state, { payload }) => {
@@ -66,7 +69,7 @@ const authSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(authApi.logout.rejected, (state, { payload }) => {
-        state.isError = payload;
+        state.isError = payload as string;
         state.isLoading = false;
       })
       .addCase(authApi.logout.fulfilled, (state) => {
@@ -76,24 +79,27 @@ const authSlice = createSlice({
       });
     builder
       .addCase(authApi.refresh.pending, (state) => {
+        state.isRefreshing = true;
         state.isError = null;
         state.isLoading = true;
       })
       .addCase(authApi.refresh.rejected, (state, { payload }) => {
         state.user = null;
         state.token = null;
-        state.isError = payload;
+        state.isError = payload as string;
         state.isLoading = false;
+        state.isRefreshing = false;
       })
       .addCase(authApi.refresh.fulfilled, (state, { payload }) => {
         state.user = payload.user;
         state.token = payload.token;
         state.isLoading = false;
+        state.isRefreshing = false;
       });
   },
 });
 
 export const {
   reducer: authReducer,
-  selectors: { selectUser },
+  selectors: { selectUser, selectIsRefreshing },
 } = authSlice;

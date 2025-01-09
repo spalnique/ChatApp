@@ -1,7 +1,18 @@
-import type { LoginCredentials, RegisterCredentials } from '@types';
-import { boolean, object, string, type ObjectSchema } from 'yup';
+import { boolean, object, string } from 'yup';
+import type { ObjectSchema } from 'yup';
+
+import type { LoginCredentials, RegisterCredentials, Username } from '@types';
 
 export const formType = { register: 'register', login: 'login' };
+
+export const userSearchSchema: ObjectSchema<Username> = object({
+  username: string()
+    .matches(
+      /^[A-Za-z0-9_]*$/,
+      'Alphanumeric symbols only. Examples: user, 13209483, '
+    )
+    .required('Enter your contact username'),
+});
 
 export const loginSchema: ObjectSchema<LoginCredentials> = object({
   email: string()

@@ -1,22 +1,25 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { AxiosError } from 'axios';
 import type { AxiosResponse } from 'axios';
 
 import type { Chat } from '@types';
 
 import { chatEndpoint } from '@reduxtoolkit';
 
-import axiosInstance from '../axios.ts';
+import instance from '../axios.ts';
 
 const getAll = createAsyncThunk<Chat[]>('chat/getAll', async (_, thunkAPI) => {
   try {
     const {
       data: { data },
-    } = await axiosInstance.get<AxiosResponse<Chat[]>>(chatEndpoint.getAll);
+    } = await instance.get<AxiosResponse<Chat[]>>(chatEndpoint.getAll);
+
     return data;
   } catch (err) {
-    console.error(err);
-
-    return thunkAPI.rejectWithValue(err);
+    if (err instanceof AxiosError) {
+      return thunkAPI.rejectWithValue(err.message);
+    }
+    return thunkAPI.rejectWithValue('Error loading all chats');
   }
 });
 
@@ -26,14 +29,13 @@ const getById = createAsyncThunk<Chat, string>(
     try {
       const {
         data: { data },
-      } = await axiosInstance.get<AxiosResponse<Chat>>(
-        chatEndpoint.getById(id)
-      );
+      } = await instance.get<AxiosResponse<Chat>>(chatEndpoint.getById(id));
       return data;
     } catch (err) {
-      console.error(err);
-
-      return thunkAPI.rejectWithValue(err);
+      if (err instanceof AxiosError) {
+        return thunkAPI.rejectWithValue(err.message);
+      }
+      return thunkAPI.rejectWithValue('Error loading chat');
     }
   }
 );
@@ -44,15 +46,16 @@ const create = createAsyncThunk<Chat, Pick<Chat, 'participants'>>(
     try {
       const {
         data: { data },
-      } = await axiosInstance.post<AxiosResponse<Chat>>(
+      } = await instance.post<AxiosResponse<Chat>>(
         chatEndpoint.create,
         payload
       );
       return data;
     } catch (err) {
-      console.error(err);
-
-      return thunkAPI.rejectWithValue(err);
+      if (err instanceof AxiosError) {
+        return thunkAPI.rejectWithValue(err.message);
+      }
+      return thunkAPI.rejectWithValue('Error starting new chat');
     }
   }
 );
@@ -63,15 +66,16 @@ const updateById = createAsyncThunk<Chat, Pick<Chat, '_id'> & Partial<Chat>>(
     try {
       const {
         data: { data },
-      } = await axiosInstance.patch<AxiosResponse<Chat>>(
+      } = await instance.patch<AxiosResponse<Chat>>(
         chatEndpoint.updateById(_id),
         payload
       );
       return data;
     } catch (err) {
-      console.error(err);
-
-      return thunkAPI.rejectWithValue(err);
+      if (err instanceof AxiosError) {
+        return thunkAPI.rejectWithValue(err.message);
+      }
+      return thunkAPI.rejectWithValue('Error updating chat');
     }
   }
 );
@@ -82,14 +86,15 @@ const deleteById = createAsyncThunk<Chat, string>(
     try {
       const {
         data: { data },
-      } = await axiosInstance.delete<AxiosResponse<Chat>>(
+      } = await instance.delete<AxiosResponse<Chat>>(
         chatEndpoint.deleteById(id)
       );
       return data;
     } catch (err) {
-      console.error(err);
-
-      return thunkAPI.rejectWithValue(err);
+      if (err instanceof AxiosError) {
+        return thunkAPI.rejectWithValue(err.message);
+      }
+      return thunkAPI.rejectWithValue('Error deleting chat');
     }
   }
 );
