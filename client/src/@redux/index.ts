@@ -16,7 +16,8 @@ export {
 
 export {
   chatReducer,
-  setActiveChat,
+  addChat,
+  deleteChat,
   selectActiveChat,
   selectAllChats,
   selectIsLoading,

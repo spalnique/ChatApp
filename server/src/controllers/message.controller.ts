@@ -4,17 +4,16 @@ import { chatService, messageService } from '@services';
 
 const create: RequestHandler = async (req, res, _next) => {
   const { chatId, content } = req.body;
+  const { displayName, username } = req.session.user;
 
   const message = await messageService.create({
-    authorId: req.session.user._id,
+    author: { displayName, username },
     content,
   });
 
   chatService.updateById(chatId, {
     $push: { messages: message.id },
   });
-
-  // проінформувати усіх клієнтів у відкритому сокеті для цього чата про створення повідомлення
 
   res.status(201).json({
     status: 201,
@@ -25,8 +24,6 @@ const create: RequestHandler = async (req, res, _next) => {
 
 const editById: RequestHandler = async (req, res, _next) => {
   const message = await messageService.edit(req.params.messageId, req.body);
-
-  // проінформувати усіх клієнтів у відкритому сокеті для цього чата про редагування повідомлення
 
   res.status(200).json({
     status: 200,
@@ -41,8 +38,6 @@ const deleteById: RequestHandler = async (req, res, _next) => {
   chatService.updateById(req.body.chatId, {
     $pull: { messages: message.id },
   });
-
-  // проінформувати усіх клієнтів у відкритому сокеті для цього чата про видалення повідомлення
 
   res.status(200).json({
     status: 200,

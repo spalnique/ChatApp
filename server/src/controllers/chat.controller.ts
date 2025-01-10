@@ -38,7 +38,7 @@ const getById: RequestHandler = async (req, res, _next) => {
 };
 
 const getAll: RequestHandler = async (req, res, _next) => {
-  const chats = await chatService.getAll(req.session.user.chats);
+  const chats = await chatService.getAll(req.session.user._id);
 
   res.status(200).json({
     status: 200,

@@ -44,7 +44,7 @@ const LoginForm: FC = () => {
           className="mb-3"
         />
 
-        <Button label="Login" type="submit" centered />
+        <Button label="Login" type="submit" $size="fullwidth" $centered />
       </Form>
       <NavLink className="mx-auto mt-6 block w-fit text-sm" to={'?register'}>
         Go to registration

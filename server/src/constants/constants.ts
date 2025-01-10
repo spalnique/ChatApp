@@ -1,4 +1,4 @@
-export const ENV = {
+export const ENV_VARS = {
   PORT: 'PORT',
   DB_USER: 'DB_USER',
   DB_PWD: 'DB_PWD',
@@ -8,6 +8,7 @@ export const ENV = {
   REDIS_URL: 'REDIS_URL',
   REDIS_SECRET: 'REDIS_SECRET',
   PROD_ENV: 'PROD_ENV',
+  SOCKET_PORT: 'SOCKET_PORT',
 };
 
 export const ONE_MINUTE = 60 * 1000;

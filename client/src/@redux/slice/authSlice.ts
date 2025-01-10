@@ -91,7 +91,6 @@ const authSlice = createSlice({
         state.isRefreshing = false;
       })
       .addCase(authApi.refresh.fulfilled, (state, { payload }) => {
-        state.user = payload.user;
         state.token = payload.token;
         state.isLoading = false;
         state.isRefreshing = false;

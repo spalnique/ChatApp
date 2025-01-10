@@ -4,13 +4,13 @@ import express from 'express';
 import { errorHandler, notFoundHandler, session } from '@middlewares';
 import { authRouter, chatRouter, messageRouter, userRouter } from '@router';
 
-const corsConfig: CorsOptions = {
+export const corsConfig: CorsOptions = {
   origin: (origin, callback) => {
     const allowedOrigins = [
       'http://localhost:5173',
       'https://chat-client-jj38.onrender.com',
     ];
-    if (allowedOrigins.includes(origin)) {
+    if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));

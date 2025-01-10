@@ -7,12 +7,15 @@ import type { SubmitHandler } from 'react-hook-form';
 
 import type { Username } from '@types';
 
-import { Button, Form, FormInput } from '@components';
+import { Button, FormInput } from '@components';
 import { userSearchSchema } from '@constant';
-import { chatApi, useAppDispatch, userApi } from '@reduxtoolkit';
+import { useSocketContext } from '@hooks';
+import { userApi } from '@reduxtoolkit';
+import { UserSearchStyled } from '@styled';
 
 const UserSearch = () => {
-  const dispatch = useAppDispatch();
+  const socket = useSocketContext();
+  if (socket?.disconnected) socket.connect();
 
   const [contactId, setContactId] = useState<string>('');
 
@@ -72,15 +75,12 @@ const UserSearch = () => {
   const handleClick: MouseEventHandler<HTMLButtonElement> = () => {
     const value = watch('username');
     if (value && isDirty) {
-      dispatch(chatApi.create({ participants: [contactId] }));
+      socket?.emit('chat:create', { participants: [contactId] });
     }
   };
 
-  const isButtonDisabled = !contactId || !watch('username');
-
   return (
-    <Form
-      typeof="{username:string}"
+    <UserSearchStyled
       onSubmit={handleSubmit(onSubmit)}
       onChange={asyncHandleChange}
       onBlur={handleBlur}
@@ -96,10 +96,11 @@ const UserSearch = () => {
         type="button"
         label="Create"
         onClick={handleClick}
-        disabled={isButtonDisabled}
-        centered
+        disabled={!socket || !contactId || !watch('username')}
+        $size="fullwidth"
+        $centered
       />
-    </Form>
+    </UserSearchStyled>
   );
 };
 export default UserSearch;

@@ -5,10 +5,9 @@ import { Collections } from '@dict';
 
 const messageSchema = new Schema(
   {
-    authorId: {
-      type: Schema.Types.ObjectId,
-      ref: Collections.user,
-      required: true,
+    author: {
+      displayName: { type: String, required: true },
+      username: { type: String, required: true },
     },
     content: { type: String, default: '' },
   },

@@ -5,21 +5,29 @@ import type { Chat } from '@types';
 
 import { ChatModel } from '@db';
 
-const create = async (payload: Pick<Chat, 'participants'>) =>
-  await ChatModel.create(payload);
+const create = async (payload: Pick<Chat, 'participants'>) => {
+  const chat = new ChatModel(payload);
+  await chat.save();
 
+  return await chat.populate([
+    { path: 'participants', select: 'displayName username' },
+    { path: 'messages' },
+  ]);
+};
 const getById = async (chatId: string) =>
-  await ChatModel.findById(chatId)
-    .populate('participants', 'id displayName')
-    .populate('messages');
+  await ChatModel.findById(chatId).populate([
+    { path: 'participants', select: 'displayName username' },
+    { path: 'messages' },
+  ]);
 
-const getAll = async (ids: Types.ObjectId[]) =>
-  await ChatModel.find({ _id: { $in: ids } })
-    .populate('participants', 'id displayName')
-    .populate({
+const getAll = async (id: Types.ObjectId) =>
+  await ChatModel.find({ participants: id }).populate([
+    { path: 'participants', select: 'displayName username' },
+    {
       path: 'messages',
       options: { sort: { createdAt: -1 }, limit: 1 },
-    });
+    },
+  ]);
 
 const updateById = async (chatId: string, payload: UpdateQuery<Chat>) =>
   await ChatModel.findByIdAndUpdate(chatId, payload, {

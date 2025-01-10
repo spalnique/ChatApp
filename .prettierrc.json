@@ -10,8 +10,9 @@
   "arrowParens": "always",
   "proseWrap": "always",
   "plugins": [
+    "@ianvs/prettier-plugin-sort-imports",
     "prettier-plugin-tailwindcss",
-    "@ianvs/prettier-plugin-sort-imports"
+    "prettier-plugin-css-order"
   ],
   "importOrder": [
     "<BUILTIN_MODULES>",
@@ -24,5 +25,6 @@
     "^@[a-zA-Z0-9]+$",
     "",
     "^[.]"
-  ]
+  ],
+  "cssDeclarationSorterOrder": "smacss"
 }

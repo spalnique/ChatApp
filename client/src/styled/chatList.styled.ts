@@ -3,8 +3,10 @@ import styled from 'styled-components';
 const ChatListStyled = styled.ul`
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  width: 200px;
+  width: 100%;
+  overflow-y: scroll;
+  background-color: white;
+  padding-top: 20px;
 `;
 
 export default ChatListStyled;

@@ -24,8 +24,11 @@ const chatSlice = createSlice({
   name: 'chat',
   initialState,
   reducers: {
-    setActiveChat: (state, { payload }: PayloadAction<Chat>) => {
-      state.active = payload;
+    addChat: (state, { payload }: PayloadAction<Chat>) => {
+      state.all = [payload, ...state.all];
+    },
+    deleteChat: (state, { payload }: PayloadAction<string>) => {
+      state.all = state.all.filter((chat) => chat._id !== payload);
     },
   },
 
@@ -60,6 +63,10 @@ const chatSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(chatApi.getById.fulfilled, (state, { payload }) => {
+        state.all = state.all.map((chat) => {
+          if (chat._id === payload._id) return payload;
+          return chat;
+        });
         state.active = payload;
         state.isLoading = false;
       });
@@ -114,6 +121,6 @@ const chatSlice = createSlice({
 
 export const {
   reducer: chatReducer,
-  actions: { setActiveChat },
+  actions: { addChat, deleteChat },
   selectors: { selectAllChats, selectActiveChat, selectIsLoading },
 } = chatSlice;

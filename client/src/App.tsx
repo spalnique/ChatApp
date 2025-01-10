@@ -1,19 +1,22 @@
 import { AnimatePresence } from 'motion/react';
-import { StrictMode } from 'react';
-import type { FC } from 'react';
+
+// import { StrictMode } from 'react';
 
 import { AnimatedWrapper } from '@components';
+import { SocketProvider } from '@context';
 import { AppRouter } from '@router';
 
-const App: FC = () => {
+const App = () => {
   return (
-    <StrictMode>
+    // <StrictMode>
+    <SocketProvider>
       <AnimatePresence>
         <AnimatedWrapper animationKey={'router'}>
           <AppRouter />
         </AnimatedWrapper>
       </AnimatePresence>
-    </StrictMode>
+    </SocketProvider>
+    // </StrictMode>
   );
 };
 export default App;

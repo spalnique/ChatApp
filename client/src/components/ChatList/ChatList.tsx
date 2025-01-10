@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
 
+import { ChatItem } from '@components';
+import { useSocketContext } from '@hooks';
 import {
   chatApi,
   selectAllChats,
@@ -10,26 +12,23 @@ import { ChatListStyled } from '@styled';
 
 const ChatList = () => {
   const dispatch = useAppDispatch();
+  const socket = useSocketContext();
+
+  if (socket?.disconnected) socket?.connect();
+
   const chats = useAppSelector(selectAllChats);
+  const sortedChats = chats.toSorted(
+    (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+  );
 
   useEffect(() => {
     dispatch(chatApi.getAll());
   }, [dispatch]);
 
   return (
-    <ChatListStyled>
-      {chats.map((chat) => (
-        <li key={chat._id}>
-          <span>{chat._id}</span>
-          <button
-            type="button"
-            onClick={() => {
-              dispatch(chatApi.deleteById(chat._id));
-            }}
-          >
-            remove chat
-          </button>
-        </li>
+    <ChatListStyled className="divide-y-[0.5px]">
+      {sortedChats.map((chat) => (
+        <ChatItem key={chat._id} chat={chat} />
       ))}
     </ChatListStyled>
   );

@@ -1,5 +1,5 @@
-import type { FieldError } from 'react-hook-form';
 import styled from 'styled-components';
+import type { FieldError } from 'react-hook-form';
 
 const InputStyled = styled.input<{ $error: FieldError['message'] }>`
   border: 0.5px solid ${({ $error }) => ($error?.length ? 'red' : 'darkgrey')};
@@ -7,6 +7,7 @@ const InputStyled = styled.input<{ $error: FieldError['message'] }>`
   outline: none;
   padding: 8px 16px;
   transition: border 150ms ease-in-out;
+  width: 100%;
 
   &:hover,
   &:focus-within {

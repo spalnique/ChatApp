@@ -97,7 +97,13 @@ const RegisterForm: FC = () => {
           $fixed
         />
 
-        <Button className="mt-3" label="Register" type="submit" centered />
+        <Button
+          className="mt-3"
+          label="Register"
+          type="submit"
+          $size="fullwidth"
+          $centered
+        />
       </Form>
       <NavLink className="mx-auto mt-6 block w-fit text-sm" to={'?login'}>
         Go to login

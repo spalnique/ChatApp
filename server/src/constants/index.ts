@@ -1,5 +1,5 @@
 export {
-  ENV as ENV_VARS,
+  ENV_VARS,
   ONE_MINUTE,
   FIVE_MINUTES,
   FIFTEEN_MINUTES,

@@ -4,4 +4,8 @@ export { default as InputStyled } from './input.styled.ts';
 export { default as ErrorStyled } from './error.styled.ts';
 export { default as FormStyled } from './form.styled.ts';
 export { default as ChatListStyled } from './chatList.styled.ts';
+export { default as ChatItemStyled } from './chatItem.styled.ts';
 export { default as ButtonStyled } from './button.styled.ts';
+export { default as SidebarStyled } from './sidebar.styled.ts';
+export { default as UserSearchStyled } from './userSearch.styled.ts';
+export { default as ActiveChatStyled } from './activeChat.styled.ts';
