@@ -3,7 +3,7 @@ import { Types } from 'mongoose';
 
 import { ENV_VARS } from '@constants';
 
-import env from './env.ts';
+import env from './env';
 
 export default function (userID: Types.ObjectId, token: string) {
   const { payload }: JwtPayload = jwt.verify(token, env(ENV_VARS.JWT_SECRET), {

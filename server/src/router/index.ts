@@ -1,4 +1,4 @@
-export { default as authRouter } from './auth.router.ts';
-export { default as chatRouter } from './chat.router.ts';
-export { default as messageRouter } from './message.router.ts';
-export { default as userRouter } from './user.router.ts';
+export { default as authRouter } from './auth.router';
+export { default as chatRouter } from './chat.router';
+export { default as messageRouter } from './message.router';
+export { default as userRouter } from './user.router';

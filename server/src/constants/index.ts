@@ -8,4 +8,4 @@ export {
   DAY,
   WEEK,
   MONTH,
-} from './constants.ts';
+} from './constants';

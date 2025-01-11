@@ -1,9 +1,11 @@
+import 'module-alias/register';
+
 import { ENV_VARS } from '@constants';
 import { connectToDB } from '@db';
 import { env } from '@helpers';
 
-import app from './app.ts';
-import httpServer from './socket.ts';
+import app from './app';
+import httpServer from './socket';
 
 (async () => {
   const PORT = env(ENV_VARS.PORT, 3000);

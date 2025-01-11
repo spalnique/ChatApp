@@ -4,7 +4,7 @@ import { Server } from 'socket.io';
 
 import { chatService, messageService } from '@services';
 
-import app, { corsConfig } from './app.ts';
+import app, { corsConfig } from './app';
 
 const httpServer = http.createServer(app); // HTTP-сервер
 const io = new Server(httpServer, {

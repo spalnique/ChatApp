@@ -1,6 +1,6 @@
 import type { Request } from 'express';
 
-import isActiveUserToken from './testToken.ts';
+import isActiveUserToken from './testToken';
 
 export default (req: Request) => {
   const result = {

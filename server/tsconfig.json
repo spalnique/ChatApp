@@ -4,18 +4,16 @@
     "rootDir": "src",
     "module": "NodeNext",
     "moduleResolution": "nodenext",
-    "target": "ESNext",
+    "target": "ES2016",
     "esModuleInterop": true,
-    "noEmit": true,
-    "allowImportingTsExtensions": true,
     "noImplicitAny": true,
     "noUnusedLocals": true,
-    "sourceMap": true,
     "typeRoots": ["src/@types", "node_modules/@types"],
+    "sourceMap": true,
     "baseUrl": ".",
     "paths": {
-      "@types": ["src/@types"],
       "@dict": ["src/@dict"],
+      "@types": ["src/@types"],
       "@constants": ["src/constants"],
       "@controllers": ["src/controllers"],
       "@db": ["src/db"],
@@ -26,5 +24,6 @@
       "@validation": ["src/validation"]
     }
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
 }

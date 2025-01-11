@@ -1,1 +1,1 @@
-export { registerUserSchema, loginUserSchema } from './schema/auth.schema.ts';
+export { registerUserSchema, loginUserSchema } from './schema/auth.schema';

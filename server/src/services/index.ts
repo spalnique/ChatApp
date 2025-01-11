@@ -1,3 +1,3 @@
-export { default as chatService } from './chat.service.ts';
-export { default as messageService } from './message.service.ts';
-export { default as userService } from './user.service.ts';
+export { default as chatService } from './chat.service';
+export { default as messageService } from './message.service';
+export { default as userService } from './user.service';
