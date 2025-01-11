@@ -14,6 +14,8 @@ export const IO = ({ _id, username }: User) => {
     query: { id: _id, username },
     reconnection: true,
     reconnectionAttempts: 5,
+    secure: import.meta.env.VITE_PROD_ENV === 'true' ? true : false,
+    transports: ['websocket', 'polling'],
   });
 
   socket.on('connect', () => {
