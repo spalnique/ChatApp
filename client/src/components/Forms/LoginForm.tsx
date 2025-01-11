@@ -27,7 +27,7 @@ const LoginForm: FC = () => {
 
   return (
     <AnimatedWrapper animationKey={'login'}>
-      <Form onSubmit={handleSubmit(onSubmit)} logo>
+      <Form onSubmit={handleSubmit(onSubmit)} $direction="column" logo>
         <FormInput<LoginCredentials>
           name="email"
           label="Email"
@@ -44,7 +44,7 @@ const LoginForm: FC = () => {
           className="mb-3"
         />
 
-        <Button label="Login" type="submit" $size="fullwidth" $centered />
+        <Button label="Login" type="submit" $centered />
       </Form>
       <NavLink className="mx-auto mt-6 block w-fit text-sm" to={'?register'}>
         Go to registration

@@ -17,7 +17,7 @@ const SocketProvider: FC<PropsWithChildren> = ({ children }) => {
       setSocket(newSocket);
     }
     return () => {
-      if (socket && socket.connected) socket.disconnect();
+      if (socket) socket.disconnect();
     };
   }, [user, socket]);
 

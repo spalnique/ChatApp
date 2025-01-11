@@ -97,7 +97,6 @@ const UserSearch = () => {
         label="Create"
         onClick={handleClick}
         disabled={!socket || !contactId || !watch('username')}
-        $size="fullwidth"
         $centered
       />
     </UserSearchStyled>

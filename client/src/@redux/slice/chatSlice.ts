@@ -2,9 +2,9 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import type { AxiosError } from 'axios';
 
-import type { Chat } from '@types';
+import type { Chat, Message } from '@types';
 
-import { chatApi } from '@reduxtoolkit';
+import { authApi, chatApi } from '@reduxtoolkit';
 
 type InitialState = {
   all: Chat[];
@@ -12,6 +12,8 @@ type InitialState = {
   isLoading: boolean;
   isError: AxiosError['message'] | string | null;
 };
+
+type AddMessagePayload = { chat: Chat; message: Message };
 
 const initialState: InitialState = {
   all: [],
@@ -29,6 +31,14 @@ const chatSlice = createSlice({
     },
     deleteChat: (state, { payload }: PayloadAction<string>) => {
       state.all = state.all.filter((chat) => chat._id !== payload);
+    },
+    addMessage: (state, { payload }: PayloadAction<AddMessagePayload>) => {
+      console.log('socket received updating chat');
+      state.all = [
+        payload.chat,
+        ...state.all.filter((chat) => chat._id !== payload.chat._id),
+      ];
+      if (state.active) state.active = payload.chat;
     },
   },
 
@@ -116,11 +126,16 @@ const chatSlice = createSlice({
         state.active = payload;
         state.isLoading = false;
       });
+
+    builder.addCase(authApi.logout.fulfilled, (state) => {
+      state.active = null;
+      state.all = [];
+    });
   },
 });
 
 export const {
   reducer: chatReducer,
-  actions: { addChat, deleteChat },
+  actions: { addChat, deleteChat, addMessage },
   selectors: { selectAllChats, selectActiveChat, selectIsLoading },
 } = chatSlice;

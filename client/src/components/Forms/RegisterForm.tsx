@@ -52,7 +52,12 @@ const RegisterForm: FC = () => {
 
   return (
     <AnimatedWrapper animationKey={'register'}>
-      <Form onSubmit={handleSubmit(onSubmit)} logo clickable>
+      <Form
+        onSubmit={handleSubmit(onSubmit)}
+        $direction="column"
+        logo
+        clickable
+      >
         <FormInput<RegisterFormData>
           name="displayName"
           label="Display name"
@@ -97,13 +102,7 @@ const RegisterForm: FC = () => {
           $fixed
         />
 
-        <Button
-          className="mt-3"
-          label="Register"
-          type="submit"
-          $size="fullwidth"
-          $centered
-        />
+        <Button className="mt-3" label="Register" type="submit" $centered />
       </Form>
       <NavLink className="mx-auto mt-6 block w-fit text-sm" to={'?login'}>
         Go to login

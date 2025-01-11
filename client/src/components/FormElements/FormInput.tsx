@@ -15,7 +15,7 @@ import {
 } from '@styled';
 
 type Props<T extends FieldValues> = InputHTMLAttributes<HTMLInputElement> & {
-  label: string;
+  label?: string;
   name: Path<T>;
   error?: FieldError['message'];
   register: UseFormRegister<T>;
@@ -32,7 +32,7 @@ const FormInput = <T extends FieldValues>({
 
   return (
     <InputWrapperStyled>
-      <LabelStyled htmlFor={id} $error={error} children={label} />
+      {label && <LabelStyled htmlFor={id} $error={error} children={label} />}
       <InputStyled id={id} $error={error} {...register(name)} {...props} />
       {error && (
         <ErrorStyled className="absolute -bottom-4 left-0" children={error} />

@@ -13,6 +13,9 @@ type Props = PropsWithChildren &
     logo?: boolean;
     logoProps?: SVGAttributes<SVGElement>;
     clickable?: boolean;
+    $direction?: 'row' | 'column';
+    $width?: 'fullwidth' | number;
+    $shadow?: boolean;
   };
 
 const Form: FC<Props> = ({

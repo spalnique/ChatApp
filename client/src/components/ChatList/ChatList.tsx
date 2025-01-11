@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 
 import { ChatItem } from '@components';
-import { useSocketContext } from '@hooks';
 import {
   chatApi,
   selectAllChats,
@@ -12,11 +11,9 @@ import { ChatListStyled } from '@styled';
 
 const ChatList = () => {
   const dispatch = useAppDispatch();
-  const socket = useSocketContext();
-
-  if (socket?.disconnected) socket?.connect();
 
   const chats = useAppSelector(selectAllChats);
+
   const sortedChats = chats.toSorted(
     (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
   );

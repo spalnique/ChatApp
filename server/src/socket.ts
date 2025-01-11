@@ -2,7 +2,7 @@ import http from 'http';
 import { Types } from 'mongoose';
 import { Server } from 'socket.io';
 
-import { chatService } from '@services';
+import { chatService, messageService } from '@services';
 
 import app, { corsConfig } from './app.ts';
 
@@ -13,7 +13,7 @@ const io = new Server(httpServer, {
 
 const userSockets = new Map<string, string>();
 
-// Socket.IO логіка
+// Socket.IO
 io.on('connection', (socket) => {
   const userId = socket.handshake.query.id as string;
   const username = socket.handshake.query.username as string;
@@ -25,13 +25,6 @@ io.on('connection', (socket) => {
     console.log('User info not provided in query');
   }
 
-  // // Реєстрація користувача після підключення
-  // socket.on('user:connected', (userId: string) => {
-  //   userSockets.set(userId, socket.id);
-  //   console.log(`User ${userId} connected with socket ${socket.id}`);
-  // });
-
-  // Користувач відключився
   socket.on('disconnect', () => {
     userSockets.forEach((socketId, userId) => {
       if (socketId === socket.id) {
@@ -41,7 +34,6 @@ io.on('connection', (socket) => {
     });
   });
 
-  // Подія створення чату
   socket.on('chat:create', async (data) => {
     try {
       const participants = [...(data.participants as string[]), userId];
@@ -72,8 +64,10 @@ io.on('connection', (socket) => {
 
       deletedChat.participants.forEach((objectId) => {
         const id = objectId.toString();
+
         if (userSockets.has(id)) {
           const receiverSocketId = userSockets.get(id);
+
           io.to(receiverSocketId).emit(
             'chat:deleted',
             deletedChat.id ?? deletedChat._id.toString()
@@ -82,6 +76,33 @@ io.on('connection', (socket) => {
       });
     } catch (error) {
       console.error('Error deleting chat', error);
+    }
+  });
+
+  socket.on('message:sent', async (data) => {
+    try {
+      const { content, author, chatId } = data;
+
+      const message = await messageService.create({
+        author,
+        content,
+      });
+
+      const chat = await chatService.updateById(chatId, {
+        $push: { messages: message.id },
+      });
+
+      chat.participants.forEach(({ _id }) => {
+        const id = _id.toString();
+
+        if (userSockets.has(id)) {
+          const receiverSocketId = userSockets.get(id);
+
+          io.to(receiverSocketId).emit('message:received', { message, chat });
+        }
+      });
+    } catch (error) {
+      console.error('Error sending message', error);
     }
   });
 });

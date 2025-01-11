@@ -1,6 +1,7 @@
 import { Navigate, useSearchParams } from 'react-router';
 
 import { ActiveChat, AnimatedWrapper, Button, Sidebar } from '@components';
+import { useSocketContext } from '@hooks';
 import {
   authApi,
   selectUser,
@@ -12,6 +13,7 @@ const MainPage = () => {
   const [searchParams] = useSearchParams();
 
   const dispatch = useAppDispatch();
+  const socket = useSocketContext();
   const user = useAppSelector(selectUser);
 
   if (searchParams.size) return <Navigate to="/main" />;
@@ -23,10 +25,12 @@ const MainPage = () => {
           Current username: {user!.username}
         </span>
         <Button
+          className="!ml-auto !mr-0"
           type="button"
           label="Logout"
-          className="!ml-auto !mr-0"
+          $width={120}
           onClick={() => {
+            socket?.disconnect();
             dispatch(authApi.logout());
           }}
         />

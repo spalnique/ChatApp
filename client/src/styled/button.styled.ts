@@ -1,34 +1,26 @@
 import styled from 'styled-components';
 
-type Props = { $centered?: boolean; $size?: 'small' | 'large' | 'fullwidth' };
+type Props = {
+  $centered?: boolean;
+  $size?: 'small' | 'large';
+  $width?: number;
+};
 
 const ButtonStyled = styled.button<Props>`
   display: flex;
+  flex-shrink: 0;
   justify-content: center;
   align-items: center;
   line-height: 1;
-  width: ${({ $size }) => {
-    switch ($size) {
-      case 'small':
-        return '90px';
-      case 'large':
-        return '250px';
-      case 'fullwidth':
-        return '100%';
-      default:
-        return 'auto';
-    }
-  }};
+  width: ${({ $width }) => ($width ? `${$width}px` : '100%')};
   padding: ${({ $size }) => {
     switch ($size) {
       case 'small':
         return '6px 12px';
       case 'large':
         return '24px 48px';
-      case 'fullwidth':
-        return '12px 24px';
       default:
-        return '8px';
+        return '12px 24px';
     }
   }};
   margin: ${({ $centered }) => ($centered ? '0 auto' : 'unset')};
@@ -40,17 +32,17 @@ const ButtonStyled = styled.button<Props>`
     color 150ms ease-in-out;
 
   &:hover {
+    border: ${({ type }) => type !== 'submit' && '0.5px solid lightblue'};
     background-color: ${({ type }) =>
       type === 'submit' ? 'darkblue' : 'lightblue'};
-    color: ${({ type }) => (type === 'submit' ? 'white' : 'white')};
-    border: ${({ type }) => type !== 'submit' && '0.5px solid lightblue'};
+    color: white;
   }
 
   &:disabled {
-    background-color: gray;
+    border: 0.5px solid lightgray;
+    background-color: white;
+    color: lightgray;
     &:hover {
-      border: 0.5px solid black;
-      color: black;
     }
   }
 `;

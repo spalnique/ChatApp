@@ -1,4 +1,4 @@
-import { MessageInput, MessageList } from '@components';
+import { MessageInput, MessageList, NoSelectedChatFiller } from '@components';
 import { selectActiveChat, useAppSelector } from '@reduxtoolkit';
 import { ActiveChatStyled } from '@styled';
 
@@ -7,7 +7,11 @@ const ActiveChat = () => {
 
   return (
     <ActiveChatStyled>
-      <MessageList chat={chat} />
+      {chat && chat.messages.length ? (
+        <MessageList messages={chat.messages} />
+      ) : (
+        <NoSelectedChatFiller />
+      )}
       <MessageInput />
     </ActiveChatStyled>
   );

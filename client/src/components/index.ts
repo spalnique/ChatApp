@@ -16,3 +16,7 @@ export { default as AppControls } from './AppControls/AppControls.tsx';
 export { default as ActiveChat } from './ActiveChat/ActiveChat.tsx';
 export { default as MessageInput } from './Forms/MessageInput.tsx';
 export { default as MessageList } from './MessageList/MessageList.tsx';
+export { default as MessageItem } from './MessageItem/MessageItem.tsx';
+export { default as NoSelectedChatFiller } from './NoSelectedChatFiller/NoSelectedChatFiller.tsx';
+export { default as NoMessagesFiller } from './NoMessagesFiller/NoMessagesFiller.tsx';
+export { default as UserInput } from './FormElements/UserInput.tsx';

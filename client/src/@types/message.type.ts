@@ -5,3 +5,5 @@ export type Message = {
   createdAt: string;
   updatedAt: string;
 };
+
+export type MessageContent = Pick<Message, 'content'>;

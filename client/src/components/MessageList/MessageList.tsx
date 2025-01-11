@@ -1,33 +1,23 @@
 import type { FC } from 'react';
 
-import type { Chat } from '@types';
+import type { Message } from '@types';
 
-type Props = { chat: Chat | null };
+import { MessageItem, NoMessagesFiller } from '@components';
+import { MessageListStyled } from '@styled';
 
-const MessageList: FC<Props> = ({ chat }) => {
+type Props = { messages: Message[] };
+
+const MessageList: FC<Props> = ({ messages }) => {
   return (
     <>
-      {chat ? (
-        <ul className="mb-[30px] flex grow flex-col-reverse gap-5 overflow-y-scroll px-8">
-          {chat.messages.toReversed().map(({ _id, content }, i) => {
-            if (i === 0) {
-              return (
-                <li key={_id} className="text-red-600">
-                  <p>{content}</p>
-                </li>
-              );
-            }
-            return (
-              <li key={_id}>
-                <p>{content}</p>
-              </li>
-            );
-          })}
-        </ul>
+      {messages.length ? (
+        <MessageListStyled>
+          {messages.map((message) => (
+            <MessageItem key={message._id} message={message} />
+          ))}
+        </MessageListStyled>
       ) : (
-        <div className="flex h-full items-center justify-center bg-emerald-100">
-          Start chatting!
-        </div>
+        <NoMessagesFiller />
       )}
     </>
   );

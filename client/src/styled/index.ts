@@ -9,3 +9,7 @@ export { default as ButtonStyled } from './button.styled.ts';
 export { default as SidebarStyled } from './sidebar.styled.ts';
 export { default as UserSearchStyled } from './userSearch.styled.ts';
 export { default as ActiveChatStyled } from './activeChat.styled.ts';
+export { default as MessageListStyled } from './messageList.styled.ts';
+export { default as MessageItemStyled } from './messageItem.styled.ts';
+export { default as UserInputStyled } from './userInput.styled.ts';
+export { default as UserInputFormStyled } from './userInputForm.styled.ts';

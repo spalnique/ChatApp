@@ -4,7 +4,7 @@ import { User } from './user.type';
 export type Chat = {
   _id: string;
   participants: Partial<User>[];
-  messages: Partial<Message>[];
+  messages: Message[];
   createdAt: string;
   updatedAt: string;
 };
