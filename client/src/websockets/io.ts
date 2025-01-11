@@ -11,7 +11,7 @@ const WSS_URL =
 
 export const IO = ({ _id, username }: User) => {
   const socket = io(WSS_URL, {
-    query: { _id, username },
+    query: { id: _id, username },
     reconnection: true,
     reconnectionAttempts: 5,
   });
