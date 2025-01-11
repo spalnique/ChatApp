@@ -5,7 +5,7 @@ import type { Chat, User } from '@types';
 import { addChat, addMessage, deleteChat, store } from '@reduxtoolkit';
 
 const WSS_URL =
-  import.meta.env.VITE_PROD_ENV === 'false'
+  import.meta.env.VITE_PROD_ENV === 'true'
     ? import.meta.env.VITE_WSS_PROD_URL
     : import.meta.env.VITE_WSS_DEV_URL;
 
