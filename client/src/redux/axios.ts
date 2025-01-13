@@ -1,8 +1,9 @@
 import axios from 'axios';
 
-const baseURL = JSON.parse(import.meta.env.VITE_PROD_ENV)
-  ? import.meta.env.VITE_API_PROD_URL
-  : import.meta.env.VITE_API_DEV_URL;
+const { VITE_ENV, VITE_API_DEV_URL, VITE_API_PROD_URL } = import.meta.env;
+
+const baseURL =
+  VITE_ENV === 'production' ? VITE_API_PROD_URL : VITE_API_DEV_URL;
 
 const instance = axios.create({
   baseURL,

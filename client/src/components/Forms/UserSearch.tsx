@@ -14,8 +14,7 @@ import { userApi } from '@reduxtoolkit';
 import { UserSearchStyled } from '@styled';
 
 const UserSearch = () => {
-  const socket = useSocketContext();
-  if (socket?.disconnected) socket.connect();
+  const ws = useSocketContext()!;
 
   const [contactId, setContactId] = useState<string>('');
 
@@ -75,7 +74,7 @@ const UserSearch = () => {
   const handleClick: MouseEventHandler<HTMLButtonElement> = () => {
     const value = watch('username');
     if (value && isDirty) {
-      socket?.emit('chat:create', { participants: [contactId] });
+      ws.createChat(contactId);
     }
   };
 
@@ -96,7 +95,7 @@ const UserSearch = () => {
         type="button"
         label="Create"
         onClick={handleClick}
-        disabled={!socket || !contactId || !watch('username')}
+        disabled={!ws.isConnected || !contactId || !watch('username')}
         $centered
       />
     </UserSearchStyled>

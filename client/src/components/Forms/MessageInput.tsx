@@ -10,24 +10,22 @@ import { selectActiveChat, selectUser, useAppSelector } from '@reduxtoolkit';
 import { UserInputFormStyled } from '@styled';
 
 const MessageInput = () => {
-  const socket = useSocketContext();
   const user = useAppSelector(selectUser)!;
-  const activeChat = useAppSelector(selectActiveChat);
+  const chat = useAppSelector(selectActiveChat);
+  const ws = useSocketContext()!;
 
   const { register, handleSubmit, watch, reset } = useForm<MessageContent>({
     defaultValues: { content: '' },
   });
 
   const onSubmit: SubmitHandler<MessageContent> = ({ content }) => {
-    if (!content.trim() || !activeChat) return;
+    if (!content.trim() || !chat) return;
 
-    const data = {
+    ws.sendMessage({
       content,
       author: { displayName: user.displayName, username: user.username },
-      chatId: activeChat._id,
-    };
-
-    socket?.emit('message:sent', data);
+      chatId: chat._id,
+    });
 
     reset();
   };
@@ -46,14 +44,14 @@ const MessageInput = () => {
         <UserInput<MessageContent>
           name="content"
           register={register}
-          disabled={!activeChat || !socket}
+          disabled={!chat || !ws.isConnected}
           onKeyDown={handleEnterKey}
         />
         <Button
           type="button"
           label="Send"
           $width={120}
-          disabled={!activeChat || !socket || !watch('content')}
+          disabled={!chat || !ws.isConnected || !watch('content')}
           onClick={handleSend}
         />
       </UserInputFormStyled>

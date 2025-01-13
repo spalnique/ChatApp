@@ -100,7 +100,7 @@ const chatSlice = createSlice({
 
         if (state.active && state.active._id === payload.chatId) {
           state.active.messages.splice(messageIndex, 1);
-        }
+        } 
       }
     },
   },

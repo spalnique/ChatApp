@@ -11,18 +11,19 @@ import {
   store,
 } from '@reduxtoolkit';
 
+const { VITE_ENV, VITE_WSS_DEV_URL, VITE_WSS_PROD_URL } = import.meta.env;
+
 const WSS_URL =
-  import.meta.env.VITE_PROD_ENV === 'true'
-    ? import.meta.env.VITE_WSS_PROD_URL
-    : import.meta.env.VITE_WSS_DEV_URL;
+  VITE_ENV === 'production' ? VITE_WSS_PROD_URL : VITE_WSS_DEV_URL;
+const secure = VITE_ENV === 'production';
 
 export const IO = ({ _id, username }: User) => {
   const socket = io(WSS_URL, {
-    query: { id: _id, username },
+    transports: ['websocket', 'polling'],
     reconnection: true,
     reconnectionAttempts: 5,
-    secure: import.meta.env.VITE_PROD_ENV === 'true' ? true : false,
-    transports: ['websocket', 'polling'],
+    query: { id: _id, username },
+    secure,
   });
 
   socket.on('connect', () => {
@@ -43,9 +44,9 @@ export const IO = ({ _id, username }: User) => {
     console.log('Chat deleted:', payload);
   });
 
-  socket.on('message:received', ({ chat, message }) => {
+  socket.on('message:sent', ({ chat, message }) => {
     store.dispatch(addMessage({ chat, message }));
-    console.log('Message received');
+    console.log('Message sent');
   });
 
   socket.on('message:edited', ({ chatId, message }) => {

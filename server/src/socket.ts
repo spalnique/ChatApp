@@ -6,8 +6,8 @@ import { chatService, messageService } from '@services';
 
 import app, { corsConfig } from './app';
 
-const httpServer = http.createServer(app); // HTTP-сервер
-const io = new Server(httpServer, {
+const server = http.createServer(app); // HTTP-сервер
+const io = new Server(server, {
   cors: corsConfig,
 });
 
@@ -57,9 +57,8 @@ io.on('connection', (socket) => {
     }
   });
 
-  socket.on('chat:delete', async (data) => {
+  socket.on('chat:delete', async (chatId) => {
     try {
-      const chatId = data;
       const deletedChat = await chatService.deleteById(chatId);
 
       deletedChat.participants.forEach((objectId) => {
@@ -68,10 +67,7 @@ io.on('connection', (socket) => {
         if (userSockets.has(id)) {
           const receiverSocketId = userSockets.get(id);
 
-          io.to(receiverSocketId).emit(
-            'chat:deleted',
-            deletedChat.id ?? deletedChat._id.toString()
-          );
+          io.to(receiverSocketId).emit('chat:deleted', chatId);
         }
       });
     } catch (error) {
@@ -79,10 +75,8 @@ io.on('connection', (socket) => {
     }
   });
 
-  socket.on('message:sent', async (data) => {
+  socket.on('message:send', async ({ content, author, chatId }) => {
     try {
-      const { content, author, chatId } = data;
-
       const message = await messageService.create({
         author,
         content,
@@ -98,7 +92,7 @@ io.on('connection', (socket) => {
         if (userSockets.has(id)) {
           const receiverSocketId = userSockets.get(id);
 
-          io.to(receiverSocketId).emit('message:received', { message, chat });
+          io.to(receiverSocketId).emit('message:sent', { message, chat });
         }
       });
     } catch (error) {
@@ -106,10 +100,8 @@ io.on('connection', (socket) => {
     }
   });
 
-  socket.on('message:edit', async (data) => {
+  socket.on('message:edit', async ({ content, messageId, chatId }) => {
     try {
-      const { content, messageId, chatId } = data;
-
       const chat = await chatService.getById(chatId);
       const message = await messageService.edit(messageId, { content });
 
@@ -127,10 +119,8 @@ io.on('connection', (socket) => {
     }
   });
 
-  socket.on('message:delete', async (data) => {
+  socket.on('message:delete', async ({ messageId, chatId }) => {
     try {
-      const { messageId, chatId } = data;
-
       await messageService.remove(messageId);
 
       const chat = await chatService.updateById(chatId, {
@@ -155,4 +145,4 @@ io.on('connection', (socket) => {
   });
 });
 
-export default httpServer;
+export default server;

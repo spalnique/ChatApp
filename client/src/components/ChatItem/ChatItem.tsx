@@ -17,7 +17,7 @@ type Props = LiHTMLAttributes<HTMLLIElement> & { chat: Chat };
 
 const ChatItem: FC<Props> = ({ chat }) => {
   const dispatch = useAppDispatch();
-  const socket = useSocketContext();
+  const ws = useSocketContext()!;
   const user = useAppSelector(selectUser);
 
   const chatMembers = chat.participants.filter(
@@ -25,7 +25,7 @@ const ChatItem: FC<Props> = ({ chat }) => {
   );
 
   const handleDelete: MouseEventHandler<HTMLButtonElement> = () => {
-    socket?.emit('chat:delete', chat._id.toString());
+    ws.deleteChat(chat._id);
   };
 
   const handleActiveChat: MouseEventHandler<HTMLLIElement> = () => {

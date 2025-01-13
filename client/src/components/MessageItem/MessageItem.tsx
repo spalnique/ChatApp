@@ -21,7 +21,7 @@ type Props = { message: Message };
 const MessageItem: FC<Props> = ({ message }) => {
   const user = useAppSelector(selectUser)!;
   const chat = useAppSelector(selectActiveChat)!;
-  const socket = useSocketContext();
+  const ws = useSocketContext()!;
 
   const contentRef = useRef<HTMLSpanElement | null>(null);
   const initialValueRef = useRef<string | null>(null);
@@ -37,23 +37,13 @@ const MessageItem: FC<Props> = ({ message }) => {
       setIsEditing(false);
 
       if (contentRef.current.textContent !== initialValueRef.current) {
-        socket?.emit('message:edit', {
-          chatId: chat._id,
-          messageId: message._id,
-          content: contentRef.current.textContent,
-        });
-        return;
+        ws.editMessage(chat._id, message._id, contentRef.current.textContent);
       }
-
-      return;
     }
 
     if (isDeleting) {
       setIsDeleting(false);
-      socket?.emit('message:delete', {
-        chatId: chat._id,
-        messageId: message._id,
-      });
+      ws.deleteMessage(chat._id, message._id);
     }
   }
 

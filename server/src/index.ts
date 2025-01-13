@@ -5,7 +5,7 @@ import { connectToDB } from '@db';
 import { env } from '@helpers';
 
 // import app from './app';
-import httpServer from './socket';
+import server from './socket';
 
 (async () => {
   const PORT = env(ENV_VARS.PORT, 3000);
@@ -15,7 +15,7 @@ import httpServer from './socket';
 
   // app.listen(PORT, () => console.log(`Server is running on PORT: ${PORT}`));
 
-  httpServer.listen(PORT, () => {
+  server.listen(PORT, () => {
     console.log(`Server is running on PORT: ${PORT}`);
   });
 })();
