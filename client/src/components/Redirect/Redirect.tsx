@@ -1,7 +1,7 @@
 import { Navigate } from 'react-router';
 import type { FC } from 'react';
 
-import { selectUser, useAppSelector } from '../../@redux';
+import { selectUser, useAppSelector } from '../../redux';
 
 const Redirect: FC = () => {
   const user = useAppSelector(selectUser);

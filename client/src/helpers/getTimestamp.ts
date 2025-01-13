@@ -38,7 +38,7 @@ export default function getMessageTimestamp(rawDate: string): string {
     const minutes = fullDate.getMinutes();
 
     const date = `${day} ${month} ${year}`;
-    const time = `${hours}:${minutes > 10 ? minutes : `0${minutes}`}`;
+    const time = `${hours}:${minutes > 9 ? minutes : `0${minutes}`}`;
 
     if (today.toLocaleDateString('fr') > fullDate.toLocaleDateString('fr')) {
       if (today.getDate() - day === 1) {

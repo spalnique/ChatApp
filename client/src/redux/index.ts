@@ -19,6 +19,8 @@ export {
   addChat,
   deleteChat,
   addMessage,
+  editMessage,
+  deleteMessage,
   selectActiveChat,
   selectAllChats,
   selectIsLoading,

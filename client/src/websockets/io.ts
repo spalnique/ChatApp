@@ -1,8 +1,15 @@
 import { io } from 'socket.io-client';
 
-import type { Chat, User } from '@types';
+import type { User } from '@types';
 
-import { addChat, addMessage, deleteChat, store } from '@reduxtoolkit';
+import {
+  addChat,
+  addMessage,
+  deleteChat,
+  deleteMessage,
+  editMessage,
+  store,
+} from '@reduxtoolkit';
 
 const WSS_URL =
   import.meta.env.VITE_PROD_ENV === 'true'
@@ -26,20 +33,29 @@ export const IO = ({ _id, username }: User) => {
     console.log('Socket disconnected:', socket?.disconnected);
   });
 
-  socket.on('chat:created', (data: Chat) => {
+  socket.on('chat:created', (chat) => {
+    store.dispatch(addChat(chat));
     console.log('New chat started');
-    console.log(data);
-    store.dispatch(addChat(data));
   });
 
-  socket.on('chat:deleted', (data: string) => {
-    store.dispatch(deleteChat(data));
-    console.log('Chat deleted');
+  socket.on('chat:deleted', (id) => {
+    const { payload } = store.dispatch(deleteChat(id));
+    console.log('Chat deleted:', payload);
   });
 
-  socket.on('message:received', (data) => {
-    store.dispatch(addMessage(data));
+  socket.on('message:received', ({ chat, message }) => {
+    store.dispatch(addMessage({ chat, message }));
     console.log('Message received');
+  });
+
+  socket.on('message:edited', ({ chatId, message }) => {
+    store.dispatch(editMessage({ chatId, message }));
+    console.log('Message edited');
+  });
+
+  socket.on('message:deleted', ({ chatId, messageId }) => {
+    store.dispatch(deleteMessage({ chatId, messageId }));
+    console.log('Message deleted');
   });
 
   return socket;

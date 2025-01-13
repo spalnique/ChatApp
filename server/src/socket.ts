@@ -105,6 +105,54 @@ io.on('connection', (socket) => {
       console.error('Error sending message', error);
     }
   });
+
+  socket.on('message:edit', async (data) => {
+    try {
+      const { content, messageId, chatId } = data;
+
+      const chat = await chatService.getById(chatId);
+      const message = await messageService.edit(messageId, { content });
+
+      chat.participants.forEach(({ _id }) => {
+        const id = _id.toString();
+
+        if (userSockets.has(id)) {
+          const receiverSocketId = userSockets.get(id);
+
+          io.to(receiverSocketId).emit('message:edited', { chatId, message });
+        }
+      });
+    } catch (error) {
+      console.error('Error editing message', error);
+    }
+  });
+
+  socket.on('message:delete', async (data) => {
+    try {
+      const { messageId, chatId } = data;
+
+      await messageService.remove(messageId);
+
+      const chat = await chatService.updateById(chatId, {
+        $pull: { messages: messageId },
+      });
+
+      chat.participants.forEach(({ _id }) => {
+        const id = _id.toString();
+
+        if (userSockets.has(id)) {
+          const receiverSocketId = userSockets.get(id);
+
+          io.to(receiverSocketId).emit('message:deleted', {
+            chatId,
+            messageId,
+          });
+        }
+      });
+    } catch (error) {
+      console.error('Error deleting message', error);
+    }
+  });
 });
 
 export default httpServer;

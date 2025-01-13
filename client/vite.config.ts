@@ -13,7 +13,7 @@ export default defineConfig({
       '@helpers': path.resolve(__dirname, './src/helpers'),
       '@constant': path.resolve(__dirname, './src/constant'),
       '@styled': path.resolve(__dirname, './src/styled'),
-      '@reduxtoolkit': path.resolve(__dirname, './src/@redux'),
+      '@reduxtoolkit': path.resolve(__dirname, './src/redux'),
       '@router': path.resolve(__dirname, './src/router'),
       '@websockets': path.resolve(__dirname, './src/websockets'),
       '@context': path.resolve(__dirname, './src/context'),

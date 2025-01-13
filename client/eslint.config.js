@@ -1,28 +1,65 @@
-import js from '@eslint/js'
-import globals from 'globals'
-import reactHooks from 'eslint-plugin-react-hooks'
-import reactRefresh from 'eslint-plugin-react-refresh'
-import tseslint from 'typescript-eslint'
+import js from '@eslint/js';
+import ts_eslint from '@typescript-eslint/eslint-plugin';
+import ts_parser from '@typescript-eslint/parser';
+import react from 'eslint-plugin-react';
+import react_refresh from 'eslint-plugin-react-refresh';
+import globals from 'globals';
 
-export default tseslint.config(
-  { ignores: ['dist'] },
+export default [
+  // Files to be linted by ESLint
   {
-    extends: [js.configs.recommended, ...tseslint.configs.recommended],
-    files: ['**/*.{ts,tsx}'],
+    files: ['src/**/*.{js,mjs,cjs,ts,jsx,tsx}'],
     languageOptions: {
-      ecmaVersion: 2020,
+      parserOptions: {
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+        project: './tsconfig.json', // path to tsconfig.json !!!
+      },
       globals: globals.browser,
     },
+  },
+  // JavaScript: base rules
+  { rules: { ...js.configs.recommended.rules, 'no-undef': 'off' } },
+
+  // TypeScript: config recommended rules
+  {
+    files: ['**/*.{ts,tsx}'],
+    languageOptions: {
+      parser: ts_parser,
+    },
     plugins: {
-      'react-hooks': reactHooks,
-      'react-refresh': reactRefresh,
+      '@typescript-eslint': ts_eslint,
     },
     rules: {
-      ...reactHooks.configs.recommended.rules,
-      'react-refresh/only-export-components': [
-        'warn',
-        { allowConstantExport: true },
-      ],
+      ...ts_eslint.configs.recommended.rules,
     },
   },
-)
+
+  // React: config recommended rules
+  {
+    files: ['**/*.{jsx,tsx}'],
+    plugins: {
+      react: react,
+    },
+    rules: {
+      ...react.configs.recommended.rules,
+      ...react.configs['jsx-runtime'].rules,
+    },
+    settings: {
+      react: {
+        version: 'detect',
+      },
+    },
+  },
+
+  // React Refresh: підтримка HMR (Vite)
+  {
+    files: ['**/*.{jsx,tsx}'],
+    plugins: {
+      'react-refresh': react_refresh,
+    },
+    rules: {
+      ...react_refresh.configs.vite.rules,
+    },
+  },
+];

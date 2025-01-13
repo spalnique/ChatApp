@@ -14,6 +14,8 @@ type InitialState = {
 };
 
 type AddMessagePayload = { chat: Chat; message: Message };
+type DeleteMessagePayload = { chatId: string; messageId: string };
+type EditMessagePayload = { chatId: string; message: Message };
 
 const initialState: InitialState = {
   all: [],
@@ -27,18 +29,79 @@ const chatSlice = createSlice({
   initialState,
   reducers: {
     addChat: (state, { payload }: PayloadAction<Chat>) => {
-      state.all = [payload, ...state.all];
+      state.all.unshift(payload);
+      state.active = payload;
     },
+
     deleteChat: (state, { payload }: PayloadAction<string>) => {
-      state.all = state.all.filter((chat) => chat._id !== payload);
+      const chatIndex = state.all.findIndex((chat) => chat._id === payload);
+
+      if (chatIndex !== -1) {
+        state.all.splice(chatIndex, 1);
+      }
+
+      if (state.active && state.active._id === payload) {
+        state.active = null;
+      }
     },
+
     addMessage: (state, { payload }: PayloadAction<AddMessagePayload>) => {
-      console.log('socket received updating chat');
-      state.all = [
-        payload.chat,
-        ...state.all.filter((chat) => chat._id !== payload.chat._id),
-      ];
-      if (state.active) state.active = payload.chat;
+      const chatIndex = state.all.findIndex(
+        (chat) => chat._id === payload.chat._id
+      );
+
+      if (chatIndex !== -1) {
+        state.all[chatIndex].updatedAt = payload.chat.updatedAt;
+        state.all[chatIndex].messages.unshift(payload.message);
+
+        if (state.active && state.active._id === payload.chat._id) {
+          state.active.updatedAt = payload.chat.updatedAt;
+          state.active.messages.unshift(payload.message);
+        }
+      }
+    },
+
+    editMessage: (state, { payload }: PayloadAction<EditMessagePayload>) => {
+      const chatIndex = state.all.findIndex(
+        (chat) => chat._id === payload.chatId
+      );
+
+      if (chatIndex !== -1) {
+        const messageIndex = state.all[chatIndex].messages.findIndex(
+          (message) => message._id === payload.message._id
+        );
+
+        if (messageIndex !== -1) {
+          state.all[chatIndex].messages[messageIndex] = payload.message;
+        }
+
+        if (state.active && state.active._id === payload.chatId) {
+          state.active.messages[messageIndex] = payload.message;
+        }
+      }
+    },
+
+    deleteMessage: (
+      state,
+      { payload }: PayloadAction<DeleteMessagePayload>
+    ) => {
+      const chatIndex = state.all.findIndex(
+        (chat) => chat._id === payload.chatId
+      );
+
+      if (chatIndex !== -1) {
+        const messageIndex = state.all[chatIndex].messages.findIndex(
+          (message) => message._id === payload.messageId
+        );
+
+        if (messageIndex !== -1) {
+          state.all[chatIndex].messages.splice(messageIndex, 1);
+        }
+
+        if (state.active && state.active._id === payload.chatId) {
+          state.active.messages.splice(messageIndex, 1);
+        }
+      }
     },
   },
 
@@ -136,6 +199,6 @@ const chatSlice = createSlice({
 
 export const {
   reducer: chatReducer,
-  actions: { addChat, deleteChat, addMessage },
+  actions: { addChat, deleteChat, addMessage, editMessage, deleteMessage },
   selectors: { selectAllChats, selectActiveChat, selectIsLoading },
 } = chatSlice;

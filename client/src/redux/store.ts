@@ -1,4 +1,4 @@
-import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit';
 import {
   FLUSH,
   PAUSE,
@@ -20,19 +20,17 @@ const authPersistConfig = {
   whitelist: ['token', 'user'],
 };
 
-// const chatPersistConfig = {
-//   key: 'chat',
-//   storage,
-//   whitelist: ['active'],
-// };
-
-const rootReducer = combineReducers({
-  auth: persistReducer(authPersistConfig, authReducer),
-  chat: chatReducer,
-});
+const chatPersistConfig = {
+  key: 'chat',
+  storage,
+  whitelist: ['active'],
+};
 
 export const store = configureStore({
-  reducer: rootReducer,
+  reducer: {
+    auth: persistReducer(authPersistConfig, authReducer),
+    chat: persistReducer(chatPersistConfig, chatReducer),
+  },
   middleware: (getDefaultMiddleWare) =>
     getDefaultMiddleWare({
       serializableCheck: {

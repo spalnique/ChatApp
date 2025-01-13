@@ -7,7 +7,7 @@ const ActiveChat = () => {
 
   return (
     <ActiveChatStyled>
-      {chat && chat.messages.length ? (
+      {chat ? (
         <MessageList messages={chat.messages} />
       ) : (
         <NoSelectedChatFiller />

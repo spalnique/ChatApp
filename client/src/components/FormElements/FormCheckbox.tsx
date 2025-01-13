@@ -39,13 +39,14 @@ const FormCheckbox = <T extends FieldValues>({
       <LabelStyled
         htmlFor={id}
         $error={error}
-        children={label}
         style={{ fontSize: 14 }}
         $fixed={$fixed}
-      />
+      >
+        {label}
+      </LabelStyled>
 
       {error && (
-        <ErrorStyled className="absolute -bottom-4 left-0" children={error} />
+        <ErrorStyled className="absolute -bottom-4 left-0">{error}</ErrorStyled>
       )}
     </div>
   );

@@ -32,10 +32,14 @@ const FormInput = <T extends FieldValues>({
 
   return (
     <InputWrapperStyled>
-      {label && <LabelStyled htmlFor={id} $error={error} children={label} />}
+      {label && (
+        <LabelStyled htmlFor={id} $error={error}>
+          {label}
+        </LabelStyled>
+      )}
       <InputStyled id={id} $error={error} {...register(name)} {...props} />
       {error && (
-        <ErrorStyled className="absolute -bottom-4 left-0" children={error} />
+        <ErrorStyled className="absolute -bottom-4 left-0">{error}</ErrorStyled>
       )}
     </InputWrapperStyled>
   );
