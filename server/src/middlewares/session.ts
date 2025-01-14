@@ -6,6 +6,12 @@ import { env } from '@helpers';
 
 import store from '../redis';
 
+const isProduction = env(ENV_VARS.NODE_ENV) === 'production';
+
+const sameSite = isProduction ? 'none' : false;
+const partitioned = isProduction;
+const secure = isProduction;
+
 const session = expressSession({
   store,
   secret: env(ENV_VARS.REDIS_SECRET),
@@ -16,10 +22,10 @@ const session = expressSession({
   name: SessionCookie.name,
   cookie: {
     httpOnly: true,
-    sameSite: env(ENV_VARS.PROD_ENV) === 'true' ? 'none' : false,
-    partitioned: env(ENV_VARS.PROD_ENV) === 'true' ? true : false,
     maxAge: WEEK,
-    secure: env(ENV_VARS.PROD_ENV) === 'true' ? true : false,
+    sameSite,
+    partitioned,
+    secure,
   },
 });
 
