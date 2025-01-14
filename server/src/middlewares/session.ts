@@ -6,7 +6,7 @@ import { env } from '@helpers';
 
 import store from '../redis';
 
-const isProduction = env(ENV_VARS.NODE_ENV) === 'production';
+const isProduction = env(ENV_VARS.APP_ENV) === 'production';
 
 const sameSite = isProduction ? 'none' : false;
 const partitioned = isProduction;
