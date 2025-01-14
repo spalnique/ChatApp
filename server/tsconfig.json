@@ -8,8 +8,8 @@
     "esModuleInterop": true,
     "noImplicitAny": true,
     "noUnusedLocals": true,
-    "typeRoots": ["src/@types", "node_modules/@types"],
-    "sourceMap": true,
+    "skipLibCheck": true,
+
     "baseUrl": ".",
     "paths": {
       "@dict": ["src/@dict"],
@@ -24,6 +24,5 @@
       "@validation": ["src/validation"]
     }
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist"]
+  "include": ["src/**/*"]
 }
