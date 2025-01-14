@@ -5,14 +5,14 @@ import type { SubmitHandler } from 'react-hook-form';
 import type { MessageContent } from '@types';
 
 import { Button, UserInput } from '@components';
-import { useSocketContext } from '@hooks';
+import { useWebsockets } from '@hooks';
 import { selectActiveChat, selectUser, useAppSelector } from '@reduxtoolkit';
 import { UserInputFormStyled } from '@styled';
 
 const MessageInput = () => {
   const user = useAppSelector(selectUser)!;
   const chat = useAppSelector(selectActiveChat);
-  const ws = useSocketContext()!;
+  const ws = useWebsockets();
 
   const { register, handleSubmit, watch, reset } = useForm<MessageContent>({
     defaultValues: { content: '' },

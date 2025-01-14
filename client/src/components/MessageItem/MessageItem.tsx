@@ -1,10 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
-import type { FC } from 'react';
 
 import type { Message } from '@types';
 
-import { getTimestamp, setCursorToEndOfEditableContent } from '@helpers';
-import { useSocketContext } from '@hooks';
+import { getMessageTimestamp, setCursorToEndOfEditableContent } from '@helpers';
+import { useWebsockets } from '@hooks';
 import { selectActiveChat, selectUser, useAppSelector } from '@reduxtoolkit';
 import {
   CancelStyled,
@@ -18,10 +17,10 @@ import {
 
 type Props = { message: Message };
 
-const MessageItem: FC<Props> = ({ message }) => {
+export default function MessageItem({ message }: Props) {
   const user = useAppSelector(selectUser)!;
   const chat = useAppSelector(selectActiveChat)!;
-  const ws = useSocketContext()!;
+  const ws = useWebsockets();
 
   const contentRef = useRef<HTMLSpanElement | null>(null);
   const initialValueRef = useRef<string | null>(null);
@@ -29,10 +28,10 @@ const MessageItem: FC<Props> = ({ message }) => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
 
-  const timestamp = getTimestamp(message.createdAt);
+  const timestamp = getMessageTimestamp(message.createdAt);
   const isMyMessage = message.author.username === user.username;
 
-  function handleConfirm(): void {
+  function handleConfirm() {
     if (isEditing && contentRef.current) {
       setIsEditing(false);
 
@@ -47,9 +46,9 @@ const MessageItem: FC<Props> = ({ message }) => {
     }
   }
 
-  function handleCancel(): void {
+  function handleCancel() {
     if (isEditing) {
-      if (contentRef.current) {
+      if (contentRef.current && initialValueRef.current) {
         if (contentRef.current.textContent !== initialValueRef.current) {
           contentRef.current.textContent = initialValueRef.current;
         }
@@ -62,43 +61,44 @@ const MessageItem: FC<Props> = ({ message }) => {
     }
   }
 
-  function handleEdit(): void {
+  function handleEdit() {
     if (contentRef.current) {
       setIsEditing(true);
       setCursorToEndOfEditableContent(contentRef);
       const tId = setTimeout(() => {
-        initialValueRef.current = contentRef.current!.textContent;
+        initialValueRef.current = contentRef.current?.textContent ?? '';
         contentRef.current!.focus();
         clearTimeout(tId);
       }, 50);
     }
   }
 
-  function handleDelete(): void {
+  function handleDelete() {
     setIsDeleting(true);
   }
 
-  function handleKeyBasedAction({ key }: KeyboardEvent): void {
-    if (key === 'Enter') handleConfirm();
-    if (key === 'Escape') handleCancel();
+  function handleKeyBasedAction(event: KeyboardEvent) {
+    if (isEditing || isDeleting) {
+      event.stopImmediatePropagation();
+      if (event.key === 'Enter') handleConfirm();
+      if (event.key === 'Escape') handleCancel();
+    }
   }
 
   useEffect(() => {
     document.addEventListener('keydown', handleKeyBasedAction);
+
     return () => {
       document.removeEventListener('keydown', handleKeyBasedAction);
     };
   });
 
   return (
-    <MessageItemStyled $isMyMessage={isMyMessage} data-id={message._id}>
+    <MessageItemStyled $isMyMessage={isMyMessage}>
       <ContentStyled
-        contentEditable={isEditing}
-        $isEditable={isEditing}
         ref={contentRef}
-        // onKeyDown={handleKeyBasedAction}
+        contentEditable={isEditing}
         spellCheck={false}
-        data-id={message._id}
         suppressContentEditableWarning
       >
         {message.content}
@@ -121,5 +121,4 @@ const MessageItem: FC<Props> = ({ message }) => {
       )}
     </MessageItemStyled>
   );
-};
-export default MessageItem;
+}

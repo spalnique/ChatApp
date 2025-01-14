@@ -1,7 +1,7 @@
 import { AppControls, ChatList, UserSearch } from '@components';
 import { SidebarStyled } from '@styled';
 
-const Sidebar = () => {
+export default function Sidebar() {
   return (
     <SidebarStyled>
       <UserSearch />
@@ -9,5 +9,4 @@ const Sidebar = () => {
       <AppControls />
     </SidebarStyled>
   );
-};
-export default Sidebar;
+}

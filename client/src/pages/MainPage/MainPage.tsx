@@ -1,7 +1,8 @@
-import { Navigate, useSearchParams } from 'react-router';
+import { useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router';
 
 import { ActiveChat, AnimatedWrapper, Button, Sidebar } from '@components';
-import { useSocketContext } from '@hooks';
+import { useWebsockets } from '@hooks';
 import {
   authApi,
   selectUser,
@@ -9,30 +10,35 @@ import {
   useAppSelector,
 } from '@reduxtoolkit';
 
-const MainPage = () => {
+export default function MainPage() {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
-  const dispatch = useAppDispatch();
-  const socket = useSocketContext();
   const user = useAppSelector(selectUser);
+  const ws = useWebsockets();
 
-  if (searchParams.size) return <Navigate to="/main" />;
+  useEffect(() => {
+    if (searchParams.size) navigate('main', { replace: true });
+  });
+
+  function handleLogout() {
+    ws.disconnect();
+    dispatch(authApi.logout());
+  }
 
   return (
     <AnimatedWrapper animationKey={'mainPage'}>
       <header className="fixed flex h-[70px] w-full items-center border-slate-300 bg-slate-300 px-8">
         <span className="ml-auto mr-0 inline-block">
-          Current username: {user!.username}
+          Current user: {user!.displayName ?? user!.username}
         </span>
         <Button
           className="!ml-auto !mr-0"
           type="button"
           label="Logout"
           $width={120}
-          onClick={() => {
-            socket?.disconnect();
-            dispatch(authApi.logout());
-          }}
+          onClick={handleLogout}
         />
       </header>
       <main className="flex">
@@ -41,5 +47,4 @@ const MainPage = () => {
       </main>
     </AnimatedWrapper>
   );
-};
-export default MainPage;
+}

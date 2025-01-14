@@ -1,10 +1,10 @@
-import type { FC, LiHTMLAttributes, MouseEventHandler } from 'react';
+import type { LiHTMLAttributes } from 'react';
 
 import type { Chat } from '@types';
 
 import { Button } from '@components';
 import { getAuthor } from '@helpers';
-import { useSocketContext } from '@hooks';
+import { useWebsockets } from '@hooks';
 import {
   chatApi,
   selectUser,
@@ -15,37 +15,38 @@ import { ChatItemStyled } from '@styled';
 
 type Props = LiHTMLAttributes<HTMLLIElement> & { chat: Chat };
 
-const ChatItem: FC<Props> = ({ chat }) => {
+export default function ChatItem({ chat }: Props) {
   const dispatch = useAppDispatch();
-  const ws = useSocketContext()!;
+  const ws = useWebsockets();
   const user = useAppSelector(selectUser);
 
-  const chatMembers = chat.participants.filter(
+  const participants = chat.participants.filter(
     (member) => member._id !== user?._id
   );
 
-  const handleDelete: MouseEventHandler<HTMLButtonElement> = () => {
+  function handleDeleteChat() {
     ws.deleteChat(chat._id);
-  };
+  }
 
-  const handleActiveChat: MouseEventHandler<HTMLLIElement> = () => {
+  function handleSelectChat() {
     dispatch(chatApi.getById(chat._id));
-  };
+  }
 
   return (
-    <ChatItemStyled onClick={handleActiveChat}>
-      <span>{chatMembers.map((member) => member.displayName).join(', ')}</span>
+    <ChatItemStyled onClick={handleSelectChat}>
+      <span>
+        {participants.map((participant) => participant.displayName).join(', ')}
+      </span>
       <span className="line-clamp-1 w-[85%]">
-        {chat.messages.length > 0
+        {chat.messages.length
           ? getAuthor(chat.messages[0])
           : 'This chat has no messages'}
       </span>
       <Button
         className="absolute right-1 top-5 !size-8"
         label={'x'}
-        onClick={handleDelete}
+        onClick={handleDeleteChat}
       />
     </ChatItemStyled>
   );
-};
-export default ChatItem;
+}

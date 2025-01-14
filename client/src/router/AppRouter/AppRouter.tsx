@@ -1,11 +1,10 @@
 import { Route, Routes } from 'react-router';
-import type { FC } from 'react';
 
 import { Redirect } from '@components';
 import { AuthPage, MainPage } from '@pages';
 import { AuthRoute, ProtectedRoute } from '@router';
 
-const AppRouter: FC = () => {
+export default function AppRouter() {
   return (
     <Routes>
       <Route path="/" element={<Redirect />} />
@@ -18,5 +17,4 @@ const AppRouter: FC = () => {
       <Route path="*" element={<Redirect />} />
     </Routes>
   );
-};
-export default AppRouter;
+}

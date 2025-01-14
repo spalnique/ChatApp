@@ -2,7 +2,7 @@ import { useContext } from 'react';
 
 import { socketContext } from '@context';
 
-export const useSocketContext = () => {
+export default function useSocketContext() {
   const context = useContext(socketContext);
 
   if (context === undefined) {
@@ -10,4 +10,4 @@ export const useSocketContext = () => {
   }
 
   return context;
-};
+}

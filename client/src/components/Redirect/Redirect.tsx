@@ -1,11 +1,18 @@
-import { Navigate } from 'react-router';
-import type { FC } from 'react';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router';
 
 import { selectUser, useAppSelector } from '../../redux';
 
-const Redirect: FC = () => {
+export default function Redirect() {
+  const navigate = useNavigate();
   const user = useAppSelector(selectUser);
+  const knownUser = localStorage.getItem('user');
 
-  return <Navigate to={user ? '/main' : '/auth?login'} replace />;
-};
-export default Redirect;
+  useEffect(() => {
+    if (user) navigate('/main', { replace: true });
+    if (knownUser) navigate('auth?login', { replace: true });
+    if (!knownUser) navigate('auth?register', { replace: true });
+  }, []);
+
+  return null;
+}

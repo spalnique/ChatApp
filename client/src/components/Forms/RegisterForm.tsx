@@ -1,8 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { NavLink } from 'react-router';
-import type { FC } from 'react';
-import type { SubmitHandler } from 'react-hook-form';
 
 import type { RegisterCredentials } from '@types';
 
@@ -18,7 +16,7 @@ import { authApi, useAppDispatch } from '@reduxtoolkit';
 
 type RegisterFormData = RegisterCredentials & { confirm?: string };
 
-const RegisterForm: FC = () => {
+export default function RegisterForm() {
   const dispatch = useAppDispatch();
 
   const {
@@ -28,7 +26,7 @@ const RegisterForm: FC = () => {
     setError,
   } = useForm<RegisterFormData>({ resolver: yupResolver(registerSchema) });
 
-  const onSubmit: SubmitHandler<RegisterFormData> = (data) => {
+  function onSubmit(data: RegisterFormData) {
     if (data.password !== data.confirm) {
       setError(
         'confirm',
@@ -48,7 +46,7 @@ const RegisterForm: FC = () => {
     delete data.confirm;
 
     dispatch(authApi.register(data as RegisterCredentials));
-  };
+  }
 
   return (
     <AnimatedWrapper animationKey={'register'}>
@@ -109,6 +107,4 @@ const RegisterForm: FC = () => {
       </NavLink>
     </AnimatedWrapper>
   );
-};
-
-export default RegisterForm;
+}

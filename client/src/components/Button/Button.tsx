@@ -1,4 +1,4 @@
-import type { ButtonHTMLAttributes, FC } from 'react';
+import type { ButtonHTMLAttributes } from 'react';
 
 import { ButtonStyled } from '@styled';
 
@@ -9,7 +9,6 @@ type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
   $width?: number;
 };
 
-const Button: FC<Props> = ({ label, ...props }) => {
+export default function Button({ label, ...props }: Props) {
   return <ButtonStyled {...props}>{label}</ButtonStyled>;
-};
-export default Button;
+}

@@ -9,7 +9,7 @@ import {
 } from '@reduxtoolkit';
 import { ChatListStyled } from '@styled';
 
-const ChatList = () => {
+export default function ChatList() {
   const dispatch = useAppDispatch();
 
   const chats = useAppSelector(selectAllChats);
@@ -29,5 +29,4 @@ const ChatList = () => {
       ))}
     </ChatListStyled>
   );
-};
-export default ChatList;
+}

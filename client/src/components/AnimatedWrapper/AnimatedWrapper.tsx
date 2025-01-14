@@ -1,5 +1,5 @@
 import { AnimatePresence, motion, MotionConfig } from 'motion/react';
-import type { FC, PropsWithChildren } from 'react';
+import type { PropsWithChildren } from 'react';
 
 type Props = PropsWithChildren & {
   animationKey: string | number;
@@ -8,13 +8,13 @@ type Props = PropsWithChildren & {
   delay?: number;
 };
 
-const AnimatedWrapper: FC<Props> = ({
+export default function AnimatedWrapper({
   animationKey,
   children,
   direction,
   duration = 0.5,
   delay = 0,
-}) => {
+}: Props) {
   const variants = {
     initial: { opacity: 0, x: 0, y: 0 },
     animate: { opacity: 1, x: 0, y: 0 },
@@ -41,5 +41,4 @@ const AnimatedWrapper: FC<Props> = ({
       </MotionConfig>
     </AnimatePresence>
   );
-};
-export default AnimatedWrapper;
+}

@@ -1,5 +1,3 @@
-import type { FC } from 'react';
-
 import type { Message } from '@types';
 
 import { MessageItem, NoMessagesFiller } from '@components';
@@ -7,7 +5,7 @@ import { MessageListStyled } from '@styled';
 
 type Props = { messages: Message[] };
 
-const MessageList: FC<Props> = ({ messages }) => {
+export default function MessageList({ messages }: Props) {
   return (
     <>
       {messages.length ? (
@@ -21,5 +19,4 @@ const MessageList: FC<Props> = ({ messages }) => {
       )}
     </>
   );
-};
-export default MessageList;
+}

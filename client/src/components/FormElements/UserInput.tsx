@@ -8,12 +8,10 @@ type Props<T extends FieldValues> = InputHTMLAttributes<HTMLInputElement> & {
   register: UseFormRegister<T>;
 };
 
-const UserInput = <T extends FieldValues>({
+export default function UserInput<T extends FieldValues>({
   name,
   register,
   ...props
-}: Props<T>): JSX.Element => {
+}: Props<T>) {
   return <UserInputStyled {...register(name)} {...props} />;
-};
-
-export default UserInput;
+}

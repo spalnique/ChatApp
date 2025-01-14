@@ -1,11 +1,15 @@
-import { Navigate, Outlet } from 'react-router';
-import type { FC } from 'react';
+import { useEffect } from 'react';
+import { Outlet, useNavigate } from 'react-router';
 
 import { selectUser, useAppSelector } from '@reduxtoolkit';
 
-const AuthRoute: FC = () => {
+export default function AuthRoute() {
+  const navigate = useNavigate();
   const user = useAppSelector(selectUser);
 
-  return user ? <Navigate to={'/main'} /> : <Outlet />;
-};
-export default AuthRoute;
+  useEffect(() => {
+    if (user) navigate('main');
+  });
+
+  return <Outlet />;
+}

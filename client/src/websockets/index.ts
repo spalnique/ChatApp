@@ -1,1 +1,1 @@
-export { IO } from './io.ts';
+export { default as IO } from './io.ts';

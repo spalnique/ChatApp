@@ -2,7 +2,7 @@ import { MessageInput, MessageList, NoSelectedChatFiller } from '@components';
 import { selectActiveChat, useAppSelector } from '@reduxtoolkit';
 import { ActiveChatStyled } from '@styled';
 
-const ActiveChat = () => {
+export default function ActiveChat() {
   const chat = useAppSelector(selectActiveChat);
 
   return (
@@ -15,5 +15,4 @@ const ActiveChat = () => {
       <MessageInput />
     </ActiveChatStyled>
   );
-};
-export default ActiveChat;
+}

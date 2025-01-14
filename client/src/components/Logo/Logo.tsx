@@ -1,14 +1,14 @@
 import { useNavigate } from 'react-router';
-import type { FC, MouseEventHandler, SVGAttributes } from 'react';
+import type { SVGAttributes } from 'react';
 
 type Props = SVGAttributes<SVGElement> & { clickable?: boolean };
 
-const Logo: FC<Props> = ({ clickable, ...props }) => {
+export default function Logo({ clickable, ...props }: Props) {
   const navigate = useNavigate();
 
-  const handleClick: MouseEventHandler<SVGElement> = () => {
+  function handleClick() {
     if (clickable) navigate('/');
-  };
+  }
 
   return (
     <div className="flex justify-center py-3 align-middle">
@@ -28,6 +28,4 @@ const Logo: FC<Props> = ({ clickable, ...props }) => {
       </svg>
     </div>
   );
-};
-
-export default Logo;
+}

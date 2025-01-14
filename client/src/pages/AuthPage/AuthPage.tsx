@@ -1,23 +1,25 @@
-import { Navigate, useSearchParams } from 'react-router';
-import type { FC } from 'react';
+import { useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router';
 
 import { Container, LoginForm, RegisterForm } from '@components';
 
-const AuthPage: FC = () => {
+export default function AuthPage() {
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
   const isLogin = searchParams.get('login') === '';
   const isRegister = searchParams.get('register') === '';
-
   const shouldRedirect = !isLogin && !isRegister;
+  const knownUser = localStorage.getItem('user');
 
-  if (shouldRedirect)
-    return searchParams.toString().startsWith('reg') ||
-      searchParams.toString().startsWith('sig') ? (
-      <Navigate to="?register" />
-    ) : (
-      <Navigate to="?login" />
-    );
+  useEffect(() => {
+    if (shouldRedirect) {
+      (() =>
+        knownUser
+          ? navigate('?login', { replace: true })
+          : navigate('?register', { replace: true }))();
+    }
+  });
 
   return (
     <Container>
@@ -25,5 +27,4 @@ const AuthPage: FC = () => {
       {isRegister && <RegisterForm />}
     </Container>
   );
-};
-export default AuthPage;
+}

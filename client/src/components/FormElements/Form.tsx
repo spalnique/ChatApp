@@ -1,5 +1,4 @@
 import type {
-  FC,
   FormHTMLAttributes,
   PropsWithChildren,
   SVGAttributes,
@@ -18,14 +17,14 @@ type Props = PropsWithChildren &
     $shadow?: boolean;
   };
 
-const Form: FC<Props> = ({
+export default function Form({
   logo,
   children,
   logoProps,
   clickable,
   onSubmit,
   ...props
-}) => {
+}: Props) {
   return (
     <FormStyled onSubmit={onSubmit} {...props}>
       {logo && (
@@ -38,6 +37,4 @@ const Form: FC<Props> = ({
       {children}
     </FormStyled>
   );
-};
-
-export default Form;
+}

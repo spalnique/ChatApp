@@ -2,29 +2,27 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { AxiosError } from 'axios';
 import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import type { FormEventHandler, MouseEventHandler } from 'react';
-import type { SubmitHandler } from 'react-hook-form';
 
 import type { Username } from '@types';
 
 import { Button, FormInput } from '@components';
 import { userSearchSchema } from '@constant';
-import { useSocketContext } from '@hooks';
+import { useWebsockets } from '@hooks';
 import { userApi } from '@reduxtoolkit';
 import { UserSearchStyled } from '@styled';
 
 const UserSearch = () => {
-  const ws = useSocketContext()!;
+  const ws = useWebsockets();
 
   const [contactId, setContactId] = useState<string>('');
 
   const {
-    register,
-    handleSubmit,
     watch,
     trigger,
-    clearErrors,
+    register,
     setError,
+    clearErrors,
+    handleSubmit,
     formState: { errors, isDirty },
   } = useForm<Username>({
     defaultValues: { username: '' },
@@ -33,7 +31,7 @@ const UserSearch = () => {
 
   const timeoutRef = useRef<NodeJS.Timeout>();
 
-  const onSubmit: SubmitHandler<Username> = async ({ username }) => {
+  async function onSubmit({ username }: Username) {
     if (!isDirty) return;
 
     try {
@@ -44,9 +42,9 @@ const UserSearch = () => {
         setError('username', { message: error.message });
       }
     }
-  };
+  }
 
-  const asyncHandleChange: FormEventHandler<HTMLFormElement> = () => {
+  function asyncHandleChange() {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
 
     timeoutRef.current = setTimeout(async () => {
@@ -65,18 +63,17 @@ const UserSearch = () => {
         }
       }
     }, 500);
-  };
+  }
 
-  const handleBlur: FormEventHandler<HTMLFormElement> = () => {
+  function handleBlur() {
     clearErrors('username');
-  };
+  }
 
-  const handleClick: MouseEventHandler<HTMLButtonElement> = () => {
-    const value = watch('username');
-    if (value && isDirty) {
+  function handleCreateChat() {
+    if (watch('username') && isDirty) {
       ws.createChat(contactId);
     }
-  };
+  }
 
   return (
     <UserSearchStyled
@@ -94,7 +91,7 @@ const UserSearch = () => {
       <Button
         type="button"
         label="Create"
-        onClick={handleClick}
+        onClick={handleCreateChat}
         disabled={!ws.isConnected || !contactId || !watch('username')}
         $centered
       />

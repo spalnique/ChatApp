@@ -10,21 +10,21 @@ import type {
 import { ErrorStyled, InputStyled, LabelStyled } from '@styled';
 
 type Props<T extends FieldValues> = InputHTMLAttributes<HTMLInputElement> & {
-  label: string;
+  label?: string;
   name: Path<T>;
   error?: FieldError['message'];
   $fixed?: boolean;
   register: UseFormRegister<T>;
 };
 
-const FormCheckbox = <T extends FieldValues>({
+export default function FormCheckbox<T extends FieldValues>({
   label,
   name,
   error,
   $fixed,
   register,
   ...props
-}: Props<T>) => {
+}: Props<T>) {
   const id = useId();
 
   return (
@@ -36,20 +36,20 @@ const FormCheckbox = <T extends FieldValues>({
         style={{ width: 14, height: 14 }}
         {...props}
       />
-      <LabelStyled
-        htmlFor={id}
-        $error={error}
-        style={{ fontSize: 14 }}
-        $fixed={$fixed}
-      >
-        {label}
-      </LabelStyled>
+      {label && (
+        <LabelStyled
+          htmlFor={id}
+          $error={error}
+          style={{ fontSize: 14 }}
+          $fixed={$fixed}
+        >
+          {label}
+        </LabelStyled>
+      )}
 
       {error && (
         <ErrorStyled className="absolute -bottom-4 left-0">{error}</ErrorStyled>
       )}
     </div>
   );
-};
-
-export default FormCheckbox;
+}

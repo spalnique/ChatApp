@@ -21,13 +21,13 @@ type Props<T extends FieldValues> = InputHTMLAttributes<HTMLInputElement> & {
   register: UseFormRegister<T>;
 };
 
-const FormInput = <T extends FieldValues>({
+export default function FormInput<T extends FieldValues>({
   label,
   name,
   error,
   register,
   ...props
-}: Props<T>): JSX.Element => {
+}: Props<T>) {
   const id = useId();
 
   return (
@@ -43,6 +43,4 @@ const FormInput = <T extends FieldValues>({
       )}
     </InputWrapperStyled>
   );
-};
-
-export default FormInput;
+}

@@ -1,8 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { NavLink } from 'react-router';
-import type { FC } from 'react';
-import type { SubmitHandler } from 'react-hook-form';
 
 import type { LoginCredentials } from '@types';
 
@@ -10,7 +8,7 @@ import { AnimatedWrapper, Button, Form, FormInput } from '@components';
 import { loginSchema } from '@constant';
 import { authApi, useAppDispatch } from '@reduxtoolkit';
 
-const LoginForm: FC = () => {
+export default function LoginForm() {
   const dispatch = useAppDispatch();
 
   const {
@@ -21,9 +19,9 @@ const LoginForm: FC = () => {
     resolver: yupResolver(loginSchema),
   });
 
-  const onSubmit: SubmitHandler<LoginCredentials> = (data) => {
+  function onSubmit(data: LoginCredentials) {
     dispatch(authApi.login(data));
-  };
+  }
 
   return (
     <AnimatedWrapper animationKey={'login'}>
@@ -51,6 +49,4 @@ const LoginForm: FC = () => {
       </NavLink>
     </AnimatedWrapper>
   );
-};
-
-export default LoginForm;
+}

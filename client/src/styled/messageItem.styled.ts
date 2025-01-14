@@ -26,11 +26,11 @@ export const MessageItemStyled = styled.div<Props>`
   }
 `;
 
-export const ContentStyled = styled.span<{ $isEditable: boolean }>`
+export const ContentStyled = styled.span<{ contentEditable: boolean }>`
   width: calc(100% - 40px);
   border-radius: 4px;
   outline: none;
-  font-style: ${({ $isEditable }) => $isEditable && 'italic'};
+  font-style: ${({ contentEditable }) => contentEditable && 'italic'};
 `;
 
 export const TimestampStyled = styled.span`

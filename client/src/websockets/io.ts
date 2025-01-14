@@ -17,7 +17,7 @@ const WSS_URL =
   VITE_ENV === 'production' ? VITE_WSS_PROD_URL : VITE_WSS_DEV_URL;
 const secure = VITE_ENV === 'production';
 
-export const IO = ({ _id, username }: User) => {
+export default function IO({ _id, username }: User) {
   const socket = io(WSS_URL, {
     transports: ['websocket', 'polling'],
     reconnection: true,
@@ -60,4 +60,4 @@ export const IO = ({ _id, username }: User) => {
   });
 
   return socket;
-};
+}
