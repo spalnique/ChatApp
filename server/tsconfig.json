@@ -9,7 +9,6 @@
     "noImplicitAny": true,
     "noUnusedLocals": true,
     "skipLibCheck": true,
-
     "baseUrl": ".",
     "paths": {
       "@dict": ["src/@dict"],
@@ -24,5 +23,6 @@
       "@validation": ["src/validation"]
     }
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
 }

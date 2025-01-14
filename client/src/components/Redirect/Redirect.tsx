@@ -10,8 +10,8 @@ export default function Redirect() {
 
   useEffect(() => {
     if (user) navigate('/main', { replace: true });
-    if (knownUser) navigate('auth?login', { replace: true });
-    if (!knownUser) navigate('auth?register', { replace: true });
+    if (knownUser) navigate('/auth?login', { replace: true });
+    if (!knownUser) navigate('/auth?register', { replace: true });
   }, []);
 
   return null;
