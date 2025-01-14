@@ -59,6 +59,7 @@ const authSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(authApi.login.fulfilled, (state, { payload }) => {
+        localStorage.setItem('user', '1');
         state.user = payload.user;
         state.token = payload.token;
         state.isLoading = false;

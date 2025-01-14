@@ -2,6 +2,7 @@ import js from '@eslint/js';
 import ts_eslint from '@typescript-eslint/eslint-plugin';
 import ts_parser from '@typescript-eslint/parser';
 import react from 'eslint-plugin-react';
+import react_hooks from 'eslint-plugin-react-hooks';
 import react_refresh from 'eslint-plugin-react-refresh';
 import globals from 'globals';
 
@@ -52,7 +53,14 @@ export default [
     },
   },
 
-  // React Refresh: підтримка HMR (Vite)
+  // React Hooks: config Rules of Hooks
+
+  {
+    plugins: { 'react-hooks': react_hooks },
+    rules: { ...react_hooks.configs.recommended.rules },
+  },
+
+  // React Refresh: support of HMR (Vite)
   {
     files: ['**/*.{jsx,tsx}'],
     plugins: {

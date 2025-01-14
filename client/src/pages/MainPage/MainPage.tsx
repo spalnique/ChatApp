@@ -1,6 +1,3 @@
-import { useEffect } from 'react';
-import { useNavigate, useSearchParams } from 'react-router';
-
 import { ActiveChat, AnimatedWrapper, Button, Sidebar } from '@components';
 import { useWebsockets } from '@hooks';
 import {
@@ -12,15 +9,9 @@ import {
 
 export default function MainPage() {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
 
   const user = useAppSelector(selectUser);
   const ws = useWebsockets();
-
-  useEffect(() => {
-    if (searchParams.size) navigate('main', { replace: true });
-  });
 
   function handleLogout() {
     ws.disconnect();
@@ -31,7 +22,7 @@ export default function MainPage() {
     <AnimatedWrapper animationKey={'mainPage'}>
       <header className="fixed flex h-[70px] w-full items-center border-slate-300 bg-slate-300 px-8">
         <span className="ml-auto mr-0 inline-block">
-          Current user: {user!.displayName ?? user!.username}
+          Current user: {user?.displayName ?? user?.username}
         </span>
         <Button
           className="!ml-auto !mr-0"

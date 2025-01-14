@@ -1,5 +1,4 @@
 export { default as Container } from './Container/Container.tsx';
-export { default as Redirect } from './Redirect/Redirect.tsx';
 export { default as UserSearch } from './Forms/UserSearch.tsx';
 export { default as LoginForm } from './Forms/LoginForm.tsx';
 export { default as RegisterForm } from './Forms/RegisterForm.tsx';

@@ -1,15 +1,18 @@
-import { useEffect } from 'react';
-import { Outlet, useNavigate } from 'react-router';
+import { Navigate, Outlet } from 'react-router';
 
 import { selectUser, useAppSelector } from '@reduxtoolkit';
 
 export default function AuthRoute() {
-  const navigate = useNavigate();
   const user = useAppSelector(selectUser);
 
-  useEffect(() => {
-    if (user) navigate('main');
-  });
+  if (user) return <Navigate to={'/'} />;
 
-  return <Outlet />;
+  const knownUser = localStorage.getItem('user');
+
+  return (
+    <>
+      <Navigate to={knownUser ? '?login' : '?register'} />
+      <Outlet />
+    </>
+  );
 }
