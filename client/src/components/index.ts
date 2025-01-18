@@ -19,3 +19,5 @@ export { default as MessageItem } from './MessageItem/MessageItem.tsx';
 export { default as NoSelectedChatFiller } from './NoSelectedChatFiller/NoSelectedChatFiller.tsx';
 export { default as NoMessagesFiller } from './NoMessagesFiller/NoMessagesFiller.tsx';
 export { default as UserInput } from './FormElements/UserInput.tsx';
+export { default as AppBar } from './AppBar/AppBar.tsx';
+export { default as DropdownMenu } from './DropdownMenu/DropdownMenu.tsx';

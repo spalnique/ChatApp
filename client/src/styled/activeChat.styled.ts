@@ -4,8 +4,7 @@ const ActiveChatStyled = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 100vh;
-  padding-top: 70px;
+  height: calc(100vh - 70px);
 `;
 
 export default ActiveChatStyled;

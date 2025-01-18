@@ -21,3 +21,6 @@ export {
 } from './messageItem.styled.ts';
 export { default as UserInputStyled } from './userInput.styled.ts';
 export { default as UserInputFormStyled } from './userInputForm.styled.ts';
+export { default as MainWrapperStyled } from './main.styled.ts';
+export { default as HeaderWrapperStyled } from './header.styled.ts';
+export { default as HeaderMenuStyled } from './headerMenu.styled.ts';
