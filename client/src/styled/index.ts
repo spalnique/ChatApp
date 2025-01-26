@@ -24,3 +24,5 @@ export { default as UserInputFormStyled } from './userInputForm.styled.ts';
 export { default as MainWrapperStyled } from './main.styled.ts';
 export { default as HeaderWrapperStyled } from './header.styled.ts';
 export { default as HeaderMenuStyled } from './headerMenu.styled.ts';
+export { default as AppControlsListStyled } from './appControlsList.styled.ts';
+export { default as AppControlsItemStyled } from './appControlsItem.styled.ts';

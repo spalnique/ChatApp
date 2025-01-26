@@ -5,20 +5,23 @@
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
-    // "allowJs": true,
+    "baseUrl": ".",
+
     "paths": {
-      "@components": ["./src/components"],
-      "@constant": ["./src/constant"],
-      "@context": ["./src/context"],
-      "@helpers": ["./src/helpers"],
-      "@hooks": ["./src/hooks"],
-      "@pages": ["./src/pages"],
-      "@reduxtoolkit": ["./src/redux"],
-      "@router": ["./src/router"],
-      "@styled": ["./src/styled"],
-      "@types": ["./src/@types"],
-      "@websockets": ["./src/websockets"]
+      "@components": ["src/components"],
+      "@constant": ["src/constant"],
+      "@context": ["src/context"],
+      "@enums": ["src/@enums"],
+      "@helpers": ["src/helpers"],
+      "@hooks": ["src/hooks"],
+      "@pages": ["src/pages"],
+      "@reduxtoolkit": ["src/redux"],
+      "@router": ["src/router"],
+      "@styled": ["src/styled"],
+      "@types": ["src/@types"],
+      "@websockets": ["src/websockets"]
     },
+
     /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
@@ -32,6 +35,7 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
+
   "include": ["src/**/*"],
   "exclude": [
     "node_modules",

@@ -1,26 +1,16 @@
-import { useEffect } from 'react';
+import type { Chat } from '@types';
 
 import { ChatItem } from '@components';
-import {
-  chatApi,
-  selectAllChats,
-  useAppDispatch,
-  useAppSelector,
-} from '@reduxtoolkit';
 import { ChatListStyled } from '@styled';
 
-export default function ChatList() {
-  const dispatch = useAppDispatch();
+type Props = {
+  chats: Chat[];
+};
 
-  const chats = useAppSelector(selectAllChats);
-
+export default function ChatList({ chats }: Props) {
   const sortedChats = chats.toSorted(
     (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
   );
-
-  useEffect(() => {
-    dispatch(chatApi.getAll());
-  }, [dispatch]);
 
   return (
     <ChatListStyled className="divide-y-[0.5px]">

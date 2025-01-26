@@ -2,7 +2,7 @@ import http from 'http';
 import { Types } from 'mongoose';
 import { Server } from 'socket.io';
 
-import { chatService, messageService } from '@services';
+import { chatService, messageService, userService } from '@services';
 
 import app, { corsConfig } from './app';
 
@@ -43,6 +43,8 @@ io.on('connection', (socket) => {
         participants: transformed,
       });
 
+      userService.update(chat.participants, { $push: { chats: chat.id } });
+
       participants.forEach((id) => {
         if (userSockets.has(id)) {
           const receiverSocketId = userSockets.get(id);
@@ -60,6 +62,10 @@ io.on('connection', (socket) => {
   socket.on('chat:delete', async (chatId) => {
     try {
       const deletedChat = await chatService.deleteById(chatId);
+
+      userService.update(deletedChat.participants, {
+        $pull: { chats: chatId },
+      });
 
       deletedChat.participants.forEach((objectId) => {
         const id = objectId.toString();

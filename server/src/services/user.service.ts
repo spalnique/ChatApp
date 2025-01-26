@@ -53,14 +53,6 @@ const find = async (
   }
 
   return user;
-
-  // return user.populate({
-  //   path: 'chats',
-  //   populate: [
-  //     { path: 'participants', select: 'displayName id' },
-  //     { path: 'messages' },
-  //   ],
-  // });
 };
 
 const findByUsername = async ({ username }: Username) => {

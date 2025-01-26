@@ -1,7 +1,30 @@
-export default function AppControls() {
+import type { Dispatch, MouseEvent, SetStateAction } from 'react';
+
+import { Tab } from '@enums';
+import { AppControlsItemStyled, AppControlsListStyled } from '@styled';
+
+type Props = {
+  activeTab: Tab;
+  onTabSelect: Dispatch<SetStateAction<Tab>>;
+};
+
+export default function AppControls({ activeTab, onTabSelect }: Props) {
+  function handleClick({ currentTarget }: MouseEvent<HTMLLIElement>) {
+    onTabSelect(currentTarget.dataset.tab as Tab);
+  }
+
   return (
-    <div className="flex h-[70px] shrink-0 items-center justify-center bg-slate-600 text-white">
-      AppControls
-    </div>
+    <AppControlsListStyled>
+      {Object.values(Tab).map((element) => (
+        <AppControlsItemStyled
+          key={element}
+          onClick={handleClick}
+          data-tab={element}
+          $isActive={activeTab === element}
+        >
+          {element}
+        </AppControlsItemStyled>
+      ))}
+    </AppControlsListStyled>
   );
 }
