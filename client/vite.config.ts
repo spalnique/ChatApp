@@ -20,4 +20,5 @@ export default defineConfig({
       '@websockets': path.resolve(__dirname, './src/websockets'),
     },
   },
+  build: { assetsInlineLimit: 0 },
 });
